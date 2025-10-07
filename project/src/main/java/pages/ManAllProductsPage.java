@@ -53,5 +53,11 @@ public class ManAllProductsPage extends BasePage {
         click(locator);
         return this;
     }
+    public WebElement findInside(WebElement parent, By childLocator) {
+        return super.findInside(parent, childLocator);
+    }
 
+    public String getTextInside(WebElement parent, By childLocator) {
+        return super.getTextInside(parent, childLocator);
+    }
 }

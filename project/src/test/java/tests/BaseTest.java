@@ -12,7 +12,6 @@ public class BaseTest {
 
     protected WebDriver driver;
     protected HomePage homePage;
-    protected ManAllProductsPage manAllProductsPage;
 
     @BeforeMethod
     public void setUp() {
@@ -25,7 +24,6 @@ public class BaseTest {
                 "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
         homePage = new HomePage(driver);
-        manAllProductsPage = new ManAllProductsPage(driver);
     }
 
     @AfterMethod

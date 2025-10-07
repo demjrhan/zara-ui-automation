@@ -104,13 +104,21 @@ public class BasePage {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
     protected void waitUntilCountIs(By locator, int expected) {
-        wait.until(d -> driver.findElements(locator).size() == expected);
+        wait.until(_ -> driver.findElements(locator).size() == expected);
     }
     protected void waitUntilCountChanges(By locator, int previous) {
-        wait.until(d -> driver.findElements(locator).size() != previous);
+        wait.until(_ -> driver.findElements(locator).size() != previous);
     }
     protected void waitForTitleContains(String text) {
         wait.until(ExpectedConditions.titleContains(text));
+    }
+
+    protected WebElement findInside(WebElement parent, By childLocator) {
+        return wait.until(_ -> parent.findElement(childLocator));
+    }
+
+    protected String getTextInside(WebElement parent, By childLocator) {
+        return findInside(parent, childLocator).getText().trim();
     }
 
 

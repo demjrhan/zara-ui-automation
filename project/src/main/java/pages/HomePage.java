@@ -15,6 +15,9 @@ public class HomePage extends BasePage {
     private final By zaraLogo = By.xpath("//a[@data-qa-action='logo-click']");
     private final By homeRoot = By.id("I2024-HOME");
     private final By shoppingCartId = By.xpath("//*[@id='shopCartView']");
+    private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
+    private final By manNavigationButton = By.xpath("//a[contains(@data-categoryid,'1885841')]");
+    private final By manViewAllButton = By.xpath("//li[contains(@data-categoryid,'2431932')]')]");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -24,6 +27,13 @@ public class HomePage extends BasePage {
         driver.get("https://www.zara.com/pl/en/");
         isVisible(homeRoot);
         return this;
+    }
+
+    public ManAllProductsPage goToManAllProducts() {
+        find(navigationButton).click();
+        find(manNavigationButton).click();
+        find(manViewAllButton).click();
+        return new ManAllProductsPage(driver);
     }
 
     public HomePage clickLogo() {
