@@ -17,7 +17,7 @@ public class HomePage extends BasePage {
     private final By shoppingCartId = By.xpath("//*[@id='shopCartView']");
     private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
     private final By manNavigationButton = By.xpath("//a[contains(@data-categoryid,'1885841')]");
-    private final By manViewAllButton = By.xpath("//li[contains(@data-categoryid,'2431932')]')]");
+    private final By manViewAllButton = By.xpath("//li[contains(@data-categoryid,'2431932')]");
 
     public HomePage(WebDriver driver) {
         super(driver);
