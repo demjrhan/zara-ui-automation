@@ -1,9 +1,8 @@
 package pages;
 
 import core.BasePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -15,8 +14,7 @@ public class ManAllCatalogPage extends BasePage {
     private final By productsList = By.cssSelector("ul.product-grid__product-list li");
     private final By filterButton = By.xpath("//button[contains(@data-qa-action,'filters-button')]");
 
-    private final By priceFilterLowerBound = By.id("zds-slider-thumb-6870");
-    private final By priceFilterHigherBound = By.id("zds-slider-thumb-6871");
+    private final By priceFilterLocator = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
 
     public ManAllCatalogPage(WebDriver driver) {
         super(driver);
@@ -87,4 +85,30 @@ public class ManAllCatalogPage extends BasePage {
     public void clickFilterButton(){
         click(filterButton);
     }
+
+    /* TODO, copied from GPT need to learn how to manage problematic sliders. Apparently Zara's slider thumbs are not drag and droppable. */
+    public void decreaseMaxPriceByPixelsFromRight(int byPixels) throws InterruptedException {
+        By sliderTrack = By.cssSelector(".zds-slider-track");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sliderTrack));
+        WebElement track = find(sliderTrack);
+
+        // ensure track is visible on screen
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", track);
+
+        int width = track.getSize().getWidth();
+
+        // first, click very near the right edge to ensure the MAX thumb is selected
+        int nearRightFromCenter = (width / 2) - 2; // offset from center to near-right
+        actions.moveToElement(track, nearRightFromCenter, 0).click().perform();
+
+        // now click at a point 'byPixels' left from the right edge
+        int targetFromLeft = Math.max(0, width - byPixels);
+        int offsetFromCenter = targetFromLeft - (width / 2);
+
+        actions.moveToElement(track, offsetFromCenter, 0).click().perform();
+
+        Thread.sleep(1500);
+    }
+
 }

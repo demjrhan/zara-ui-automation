@@ -1,9 +1,7 @@
 package core;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,6 +11,7 @@ import java.util.List;
 public class BasePage {
     protected final WebDriver driver;
     protected final WebDriverWait wait;
+    protected final Actions actions;
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
@@ -20,6 +19,7 @@ public class BasePage {
         until the action is possible, if it will trigger in 2. second that it will return it at that time
         rather than consuming whole 10 seconds.*/
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.actions = new Actions(driver);
     }
 
     protected WebElement find(By locator) {

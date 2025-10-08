@@ -44,9 +44,11 @@ public class ManAllProductsSmokeTest extends BaseTest {
         }
     }
 
+    /* TODO need to check if lower and higher price range filters works as expected */
     @Test(groups = "smoke")
-    public void priceRangeFilterWorksCorrectly() {
+    public void priceRangeFilterWorksCorrectly() throws InterruptedException {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         manCatalog.clickFilterButton();
+        manCatalog.decreaseMaxPriceByPixelsFromRight(25);
     }
 }
