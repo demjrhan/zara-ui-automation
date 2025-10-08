@@ -1,10 +1,14 @@
 package pages;
 
 import core.BasePage;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
+import java.util.Random;
 
 public class ManAllCatalogPage extends BasePage {
 
@@ -13,8 +17,13 @@ public class ManAllCatalogPage extends BasePage {
 
     private final By productsList = By.cssSelector("ul.product-grid__product-list li");
     private final By filterButton = By.xpath("//button[contains(@data-qa-action,'filters-button')]");
+    private final By closeFilterButton = By.xpath("//div[contains(@class,'zds-drawer-header')]//button[contains(@aria-label,'close')]");
+    private final By clearFilterButton = By.xpath("//button[contains(@data-qa-action,'filters-clear')]");
 
-    private final By priceFilterLocator = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
+    private final By priceSliderLocator = By.cssSelector(".zds-slider-track");
+    private final By priceSliderThumbsLocator = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
+
+    private final By priceTagOfCard = By.cssSelector("span.money-amount__main");
 
     public ManAllCatalogPage(WebDriver driver) {
         super(driver);
@@ -58,6 +67,7 @@ public class ManAllCatalogPage extends BasePage {
     public void click(By locator) {
         super.click(locator);
     }
+
     public WebElement findInside(WebElement parent, By childLocator) {
         return super.findInside(parent, childLocator);
     }
@@ -70,7 +80,7 @@ public class ManAllCatalogPage extends BasePage {
         return findAll(productsList);
     }
 
-    public String getCardTitle(int index, By locator) {
+    public String getCardTitleByIndex(int index, By locator) {
         var cards = findAll(productsList);
         return findInside(cards.get(index), locator).getText().trim();
     }
@@ -82,33 +92,60 @@ public class ManAllCatalogPage extends BasePage {
         return new ProductDetailPage(driver);
     }
 
-    public void clickFilterButton(){
+    public void openFilterOptions() {
         click(filterButton);
     }
 
-    /* TODO, copied from GPT need to learn how to manage problematic sliders. Apparently Zara's slider thumbs are not drag and droppable. */
-    public void decreaseMaxPriceByPixelsFromRight(int byPixels) throws InterruptedException {
-        By sliderTrack = By.cssSelector(".zds-slider-track");
+    public void clearFilterOptions() {
+        click(clearFilterButton);
+    }
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(sliderTrack));
-        WebElement track = find(sliderTrack);
+    public void closeFilterOptions() {
+        click(closeFilterButton);
+    }
 
-        // ensure track is visible on screen
+    public int getPriceOfCard(WebElement element) {
+        return getPriceFromFullString(getTextInside(element, priceTagOfCard));
+    }
+
+    public int getPriceFromFullString(String string) {
+        string = string.replace("\u00A0", "");
+        string = string.replace("PLN", "").trim();
+        string = string.substring(0, string.length() - 3);
+        string = string.replace(".", "");
+        string = string.replace(",", "");
+        return Integer.parseInt(string);
+    }
+
+    public int[] getPriceRangeFilter() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(priceSliderLocator));
+        var priceThumbs = findAll(priceSliderThumbsLocator);
+
+        var lowLimit = priceThumbs.getFirst().getAttribute("aria-valuetext").trim();
+        var highLimit = priceThumbs.getLast().getAttribute("aria-valuetext").trim();
+
+        var lowLimitPrice = getPriceFromFullString(lowLimit);
+        var highLimitPrice = getPriceFromFullString(highLimit);
+
+        return new int[]{lowLimitPrice, highLimitPrice};
+    }
+
+
+    public void changePriceRangeFilterRandomly() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(priceSliderLocator));
+        WebElement track = find(priceSliderLocator);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", track);
-
         int width = track.getSize().getWidth();
-
-        // first, click very near the right edge to ensure the MAX thumb is selected
-        int nearRightFromCenter = (width / 2) - 2; // offset from center to near-right
+        int nearRightFromCenter = (width / 2) - 2;
         actions.moveToElement(track, nearRightFromCenter, 0).click().perform();
 
-        // now click at a point 'byPixels' left from the right edge
-        int targetFromLeft = Math.max(0, width - byPixels);
+        Random random = new Random();
+        int randomThreshold = width / 2 + random.nextInt(width / 2 + 1);
+        int targetFromLeft = Math.max(0, width - randomThreshold);
         int offsetFromCenter = targetFromLeft - (width / 2);
 
         actions.moveToElement(track, offsetFromCenter, 0).click().perform();
-
-        Thread.sleep(1500);
     }
+
 
 }

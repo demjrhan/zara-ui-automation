@@ -25,7 +25,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
     @Test(groups = "smoke")
     public void clickingOnProductBringsRightScreen() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-        var productNameInCatalog = manCatalog.getCardTitle(1,By.cssSelector("h3"));
+        var productNameInCatalog = manCatalog.getCardTitleByIndex(1,By.cssSelector("h3"));
         var productDetailPage = manCatalog.clickCard(1);
         var productNameInDetailPage = productDetailPage.getNameOfProduct();
         Assert.assertEquals(productNameInDetailPage, productNameInCatalog, "The product" + productNameInCatalog + "in catalog should be the same in " +
@@ -35,7 +35,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
     public void clickingOnProductBringsRightScreen10() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         for (int i = 0 ; i < 10 ; i++) {
-            var productNameInCatalog = manCatalog.getCardTitle(i,By.cssSelector("h3"));
+            var productNameInCatalog = manCatalog.getCardTitleByIndex(i,By.cssSelector("h3"));
             var productDetailPage = manCatalog.clickCard(i);
             var productNameInDetailPage = productDetailPage.getNameOfProduct();
             Assert.assertEquals(productNameInDetailPage, productNameInCatalog, "The product" + productNameInCatalog + "in catalog should be the same in " +
@@ -44,11 +44,22 @@ public class ManAllProductsSmokeTest extends BaseTest {
         }
     }
 
-    /* TODO need to check if lower and higher price range filters works as expected */
     @Test(groups = "smoke")
-    public void priceRangeFilterWorksCorrectly() throws InterruptedException {
+    public void priceRangeFilterWorksCorrectly() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-        manCatalog.clickFilterButton();
-        manCatalog.decreaseMaxPriceByPixelsFromRight(25);
+
+        for (int i = 0 ; i < 3 ; i++) {
+            manCatalog.openFilterOptions();
+            manCatalog.changePriceRangeFilterRandomly();
+            var priceRange = manCatalog.getPriceRangeFilter();
+
+            var products = manCatalog.getAllProducts();
+
+            for (int j = 0 ; j < 10 ; j++ ){
+                var priceOfProduct = manCatalog.getPriceOfCard(products.get(j));
+                Assert.assertTrue(priceOfProduct >= priceRange[0] && priceOfProduct <= priceRange[1], "Price range " + priceRange[0]+ " | " + priceRange[1] + " does not sut the product price " + priceOfProduct);
+            }
+            manCatalog.clearFilterOptions();
+        }
     }
 }
