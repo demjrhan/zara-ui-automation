@@ -32,7 +32,7 @@ public class BasePage {
     }
 
     protected String getText(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
     }
     protected void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();

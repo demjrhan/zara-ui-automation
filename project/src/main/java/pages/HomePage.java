@@ -10,14 +10,17 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-    private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
-    private final By shoppingCart = By.xpath("//a[@data-qa-id='layout-header-go-to-cart']");
-    private final By zaraLogo = By.xpath("//a[@data-qa-action='logo-click']");
     private final By homeRoot = By.id("I2024-HOME");
+    private final By zaraLogo = By.xpath("//a[@data-qa-action='logo-click']");
+    private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
+
+
+    private final By shoppingCart = By.xpath("//a[@data-qa-id='layout-header-go-to-cart']");
     private final By shoppingCartId = By.xpath("//*[@id='shopCartView']");
     private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
     private final By manNavigationButton = By.xpath("//a[contains(@data-categoryid,'1885841')]");
     private final By manViewAllButton = By.xpath("//li[contains(@data-categoryid,'2431932')]");
+    private final By manProductsList = By.cssSelector("ul.product-grid__product-list li");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -29,15 +32,16 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public ManAllProductsPage goToManAllProducts() {
+    public ManAllCatalogPage openManCatalog() {
         find(navigationButton).click();
         find(manNavigationButton).click();
         find(manViewAllButton).click();
-        return new ManAllProductsPage(driver);
+        waitUntilVisible(manProductsList);
+        return new ManAllCatalogPage(driver);
     }
 
     public HomePage clickLogo() {
-        clickField(zaraLogo);
+        click(zaraLogo);
         return this;
     }
 
@@ -45,15 +49,20 @@ public class HomePage extends BasePage {
         return isVisible(homeRoot);
     }
 
-    public HomePage clickField(By locator) {
-        click(locator);
-        return this;
+    public void click(By locator) {
+        super.click(locator);
     }
+
 
     public List<WebElement> findAll(By locator) {
         return super.findAll(locator);
     }
-
+    public WebElement find(By locator) {
+        return super.find(locator);
+    }
+    public String getText(By locator) {
+        return super.getText(locator);
+    }
     public void type(By locator, String text) {
         super.type(locator, text);
     }

@@ -32,31 +32,38 @@ public class HomeRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     public void testClickSearchAndWrite() {
-        var home = homePage.open().acceptCookiesIfPresent().clickField(searchTrigger);
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.click(searchTrigger);
         Assert.assertTrue(home.isVisible(searchInput), "Search field should be visible.");
-        home.clickField(searchInput).type(searchInput, "Blazer");
+        home.click(searchInput);
+        home.type(searchInput, "Blazer");
         Assert.assertFalse(home.isEmpty(searchInput), "Search field should contain text.");
     }
 
     @Test(groups = "regression")
     public void testSearchTriggerIsNotVisibleAfterSearchInputOpened() {
-        var home = homePage.open().acceptCookiesIfPresent().clickField(searchTrigger);
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.click(searchTrigger);
         Assert.assertTrue(home.isNotVisible(searchTrigger),
                 "Search trigger should not be visible after opening search input.");
     }
 
     @Test(groups = "regression")
     public void testAfterSearchItemListPopulates() {
-        var home = homePage.open().acceptCookiesIfPresent().clickField(searchTrigger);
-        home.clickField(searchInput).type(searchInput, "Blazer");
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.click(searchTrigger);
+        home.click(searchInput);
+        home.type(searchInput, "Blazer");
         var items = home.findAll(searchedItemList);
         Assert.assertFalse(items.isEmpty(), "Search item list should contain items.");
     }
 
     @Test(groups = "regression")
     public void testAfterWriteRandomTextSearchFieldItemListDoesntPopulate() {
-        var home = homePage.open().acceptCookiesIfPresent().clickField(searchTrigger);
-        home.clickField(searchInput).type(searchInput, "random-text");
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.click(searchTrigger);
+        home.click(searchInput);
+        home.type(searchInput, "random-text");
         Assert.assertTrue(home.isNotVisible(searchedItemList),
                 "Search item list should not be visible after invalid search.");
     }
