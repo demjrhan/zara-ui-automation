@@ -56,6 +56,7 @@ public class ManAllCatalogPage extends BasePage {
     }
 
     public List<WebElement> findAll(By locator) {
+        waitUntilVisible(locator);
         return super.findAll(locator);
     }
 

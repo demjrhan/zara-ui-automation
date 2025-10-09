@@ -38,9 +38,13 @@ public class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
     protected void click(WebElement element) {
+        scrollToElement(element);
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 
+    protected void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
 
     protected void type(By locator, String text) {
         WebElement el = find(locator);
@@ -104,6 +108,7 @@ public class BasePage {
     protected void waitUntilVisible(By locator) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+
     protected void waitUntilInvisible(By locator) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
