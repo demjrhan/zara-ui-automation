@@ -1,10 +1,13 @@
 package tests.regression;
 
+import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 
+@Epic("Zara Website Testing")
+@Feature("Home Page Regression Tests")
 public class HomeRegressionTest extends BaseTest {
 
     private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
@@ -14,6 +17,10 @@ public class HomeRegressionTest extends BaseTest {
     private final By shoppingCart = By.xpath("//a[@data-qa-id='layout-header-go-to-cart']");
 
     @Test(groups = "regression")
+    @Story("Home Page Navigation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that clicking the Zara logo multiple times maintains consistency")
+    @Step("Click logo multiple times and verify home page")
     public void testZaraHomeButtonConsistency() {
         var home = homePage.open().acceptCookiesIfPresent();
         for (int i = 0; i < 25; i++) {
@@ -23,6 +30,10 @@ public class HomeRegressionTest extends BaseTest {
     }
 
     @Test(groups = "regression")
+    @Story("Cookie Management")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that cookies are not shown again after refresh")
+    @Step("Accept cookies and refresh page")
     public void testAcceptCookiesIsNotPresentAfterRefresh() {
         var home = homePage.open().acceptCookiesIfPresent();
         home.refresh();
@@ -31,6 +42,10 @@ public class HomeRegressionTest extends BaseTest {
     }
 
     @Test(groups = "regression")
+    @Story("Search Functionality")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify search functionality works correctly")
+    @Step("Click search and type text")
     public void testClickSearchAndWrite() {
         var home = homePage.open().acceptCookiesIfPresent();
         home.click(searchTrigger);
@@ -41,6 +56,10 @@ public class HomeRegressionTest extends BaseTest {
     }
 
     @Test(groups = "regression")
+    @Story("Search Functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify search trigger disappears after opening search input")
+    @Step("Click search trigger and verify it becomes invisible")
     public void testSearchTriggerIsNotVisibleAfterSearchInputOpened() {
         var home = homePage.open().acceptCookiesIfPresent();
         home.click(searchTrigger);
@@ -49,6 +68,10 @@ public class HomeRegressionTest extends BaseTest {
     }
 
     @Test(groups = "regression")
+    @Story("Search Functionality")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that search results populate after typing valid search term")
+    @Step("Search for 'Blazer' and verify results appear")
     public void testAfterSearchItemListPopulates() {
         var home = homePage.open().acceptCookiesIfPresent();
         home.click(searchTrigger);
@@ -59,6 +82,10 @@ public class HomeRegressionTest extends BaseTest {
     }
 
     @Test(groups = "regression")
+    @Story("Search Functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that invalid search terms don't show results")
+    @Step("Search for random text and verify no results appear")
     public void testAfterWriteRandomTextSearchFieldItemListDoesntPopulate() {
         var home = homePage.open().acceptCookiesIfPresent();
         home.click(searchTrigger);

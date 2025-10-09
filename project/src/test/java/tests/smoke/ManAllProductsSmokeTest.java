@@ -1,19 +1,30 @@
 package tests.smoke;
 
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 
+@Epic("Zara Website Testing")
+@Feature("Man Products Catalog")
 public class ManAllProductsSmokeTest extends BaseTest {
 
 
     @Test(groups = "smoke")
+    @Story("Catalog Navigation")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that man products catalog page opens correctly")
+    @Step("Navigate to man catalog page")
     public void pageOpensCorrectly() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         Assert.assertTrue(manCatalog.atManAllProductsPage(), "Man all products page should be opened");
     }
 
     @Test(groups = "smoke")
+    @Story("Product Display")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that at least one product is displayed in catalog")
+    @Step("Check if products are loaded")
     public void thereIsAtLeastOneProduct() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         var products = manCatalog.getAllProducts();
@@ -21,6 +32,10 @@ public class ManAllProductsSmokeTest extends BaseTest {
     }
 
     @Test(groups = "smoke")
+    @Story("Product Navigation")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that clicking on a product opens the correct product detail page")
+    @Step("Click on first product and verify details page")
     public void clickingOnProductBringsRightScreen() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         var productNameInCatalog = manCatalog.getProductTitleByIndex(1);
@@ -44,6 +59,10 @@ public class ManAllProductsSmokeTest extends BaseTest {
     }
 
     @Test(groups = "smoke")
+    @Story("Filter Functionality")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that price range filter works correctly")
+    @Step("Apply price filter and verify results")
     public void priceRangeFilterWorksCorrectly() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
@@ -80,6 +99,10 @@ public class ManAllProductsSmokeTest extends BaseTest {
     }
 
     @Test(groups = "smoke")
+    @Story("Filter Functionality")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that category filter works correctly by index")
+    @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByIndex(){
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
