@@ -5,8 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -20,10 +20,13 @@ public class ManAllCatalogPage extends BasePage {
     private final By closeFilterButton = By.xpath("//div[contains(@class,'zds-drawer-header')]//button[contains(@aria-label,'close')]");
     private final By clearFilterButton = By.xpath("//button[contains(@data-qa-action,'filters-clear')]");
 
-    private final By priceSliderLocator = By.cssSelector(".zds-slider-track");
-    private final By priceSliderThumbsLocator = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
+    private final By priceSlider = By.cssSelector(".zds-slider-track");
+    private final By priceSliderThumbs = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
 
     private final By priceTagOfCard = By.cssSelector("span.money-amount__main");
+    private final By nameOfCategory = By.cssSelector("a");
+
+    private final By topBarCategories = By.xpath("//nav[contains(@class,'category-topbar-related-categories')]//ul/li");
 
     public ManAllCatalogPage(WebDriver driver) {
         super(driver);
@@ -67,6 +70,9 @@ public class ManAllCatalogPage extends BasePage {
     public void click(By locator) {
         super.click(locator);
     }
+    public void click(WebElement element) {
+        super.click(element);
+    }
 
     public WebElement findInside(WebElement parent, By childLocator) {
         return super.findInside(parent, childLocator);
@@ -80,9 +86,12 @@ public class ManAllCatalogPage extends BasePage {
         return findAll(productsList);
     }
 
-    public String getCardTitleByIndex(int index, By locator) {
+    public String getProductTitleByIndex(int index) {
         var cards = findAll(productsList);
-        return findInside(cards.get(index), locator).getText().trim();
+        return getTextInside(cards.get(index), By.cssSelector("h3"));
+    }
+    public String getProductTitleByWebElement(WebElement element) {
+        return getTextInside(element, By.cssSelector("h3"));
     }
 
     public ProductDetailPage clickCard(int index) {
@@ -118,8 +127,8 @@ public class ManAllCatalogPage extends BasePage {
     }
 
     public int[] getPriceRangeFilter() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(priceSliderLocator));
-        var priceThumbs = findAll(priceSliderThumbsLocator);
+        waitUntilVisible(priceSlider);
+        var priceThumbs = findAll(priceSliderThumbs);
 
         var lowLimit = priceThumbs.getFirst().getAttribute("aria-valuetext").trim();
         var highLimit = priceThumbs.getLast().getAttribute("aria-valuetext").trim();
@@ -132,8 +141,8 @@ public class ManAllCatalogPage extends BasePage {
 
 
     public void changePriceRangeFilterRandomly() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(priceSliderLocator));
-        WebElement track = find(priceSliderLocator);
+        waitUntilVisible(priceSliderThumbs);
+        WebElement track = find(priceSlider);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", track);
         int width = track.getSize().getWidth();
         int nearRightFromCenter = (width / 2) - 2;
@@ -146,6 +155,64 @@ public class ManAllCatalogPage extends BasePage {
 
         actions.moveToElement(track, offsetFromCenter, 0).click().perform();
     }
+
+    public List<WebElement> getAllCategories() {
+        waitUntilVisible(topBarCategories);
+        return findAll(topBarCategories);
+    }
+    public WebElement getCategoryByIndex(int index) {
+        waitUntilVisible(topBarCategories);
+        return findAll(topBarCategories).get(index);
+    }
+    public WebElement getCategoryByName(String name) {
+        name = name.toLowerCase().trim();
+        waitUntilVisible(topBarCategories);
+        var categories =  findAll(topBarCategories);
+        for (WebElement category : categories) {
+            var categoryNames = getCategory(category);
+            for (var categoryName : categoryNames) {
+                categoryName = categoryName.toLowerCase().trim();
+                if (categoryName.contains(name) || categoryName.startsWith(name) || categoryName.endsWith(name)) {
+                    return category;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<String> getCategory(WebElement element) {
+        return getCategoryTitleFromFullString(getTextInside(element, nameOfCategory));
+    }
+
+    public List<String> getCategoryTitleFromFullString(String string) {
+        if (string.contains("|")) {
+            String[] parts = string.split("\\|");
+            return Arrays.stream(parts).toList();
+        }
+        if (string.contains("-")) {
+            String[] parts = string.split("-");
+            return List.of(parts[1]);
+        }
+        if (string.contains(" ")) {
+            String[] parts = string.split(" ");
+            return Arrays.stream(parts).toList();
+        }
+        return List.of(string);
+
+    }
+
+    public boolean anyProductContainsString(String keyword, List<WebElement> list) {
+        keyword = keyword.toLowerCase().trim();
+        for (WebElement element : list) {
+            var title = getProductTitleByWebElement(element).toLowerCase().trim();
+            if (title.contains(keyword) || title.startsWith(keyword) || title.endsWith(keyword)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 
 
 }

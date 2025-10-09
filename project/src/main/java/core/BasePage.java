@@ -37,6 +37,10 @@ public class BasePage {
     protected void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
+    protected void click(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
 
     protected void type(By locator, String text) {
         WebElement el = find(locator);
@@ -118,6 +122,7 @@ public class BasePage {
     }
 
     protected String getTextInside(WebElement parent, By childLocator) {
+        waitUntilVisible(childLocator);
         return findInside(parent, childLocator).getText().trim();
     }
 
