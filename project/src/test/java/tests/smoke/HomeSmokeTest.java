@@ -57,9 +57,6 @@ public class HomeSmokeTest extends BaseTest {
         Assert.assertTrue(home.isClickable(shoppingCart), "Shopping cart should be clickable.");
     }
 
-    /*@Test(groups = "smoke")
-    public void testClickingOnShoppingCartButtonBringsShoppingCartPage() {
-        var cart = homePage.open().acceptCookiesIfPresent().goToShoppingCartPage();
-        Assert.assertTrue(cart.atShoppingCartPage(), "Shopping cart should be opened.");
-    }*/
+
+
 }

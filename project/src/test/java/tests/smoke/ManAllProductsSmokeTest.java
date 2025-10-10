@@ -73,7 +73,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
         var products = manCatalog.getAllProducts();
 
         for (int i = 0; i < 10; i++) {
-            var priceOfProduct = manCatalog.getPriceOfCard(products.get(i));
+            var priceOfProduct = manCatalog.getPriceOfCardByWebElement(products.get(i));
             Assert.assertTrue(priceOfProduct >= priceRange[0] && priceOfProduct <= priceRange[1], "Price range " + priceRange[0] + " | " + priceRange[1] + " does not sut the product price " + priceOfProduct);
         }
         manCatalog.clearFilterOptions();
@@ -91,7 +91,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
             var products = manCatalog.getAllProducts();
 
             for (int j = 0; j < 10; j++) {
-                var priceOfProduct = manCatalog.getPriceOfCard(products.get(j));
+                var priceOfProduct = manCatalog.getPriceOfCardByWebElement(products.get(j));
                 Assert.assertTrue(priceOfProduct >= priceRange[0] && priceOfProduct <= priceRange[1], "Price range " + priceRange[0] + " | " + priceRange[1] + " does not sut the product price " + priceOfProduct);
             }
             manCatalog.clearFilterOptions();
@@ -122,6 +122,10 @@ public class ManAllProductsSmokeTest extends BaseTest {
     }
 
     @Test(groups = "smoke")
+    @Story("Filter Functionality")
+    @Severity(SeverityLevel.TRIVIAL)
+    @Description("Verify that category filter works correctly by name")
+    @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByName(){
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
@@ -137,6 +141,20 @@ public class ManAllProductsSmokeTest extends BaseTest {
             var result = manCatalog.anyProductContainsString(categoryName, products.subList(0, 10));
             Assert.assertTrue(result, String.format("Category %s contains %s products", categoryName, result));
         }
+
+    }
+
+    @Test(groups = "smoke")
+    @Story("Filter Functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that ascending filter works correctly")
+    @Step("Apply ascending filter and verify results")
+    public void ascendingFilterWorksCorrectly(){
+        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var products = manCatalog.getAllProducts();
+        var productsAfter = manCatalog.sortByPriceAscending().getAllProducts();
+        System.out.println(products.get(1));
+        System.out.println(productsAfter.get(1).getText());
 
     }
 }

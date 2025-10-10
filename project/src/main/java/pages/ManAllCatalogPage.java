@@ -19,6 +19,8 @@ public class ManAllCatalogPage extends BasePage {
     private final By filterButton = By.xpath("//button[contains(@data-qa-action,'filters-button')]");
     private final By closeFilterButton = By.xpath("//div[contains(@class,'zds-drawer-header')]//button[contains(@aria-label,'close')]");
     private final By clearFilterButton = By.xpath("//button[contains(@data-qa-action,'filters-clear')]");
+    private final By sortPriceAscending = By.xpath("//span[contains(@class,'filters-group-text__item-label') and normalize-space(text())='ASCENDING PRICE']/ancestor::label");
+    private final By sortPriceDescending = By.xpath("//span[contains(@class,'filters-group-text__item-label') and normalize-space(text())='DESCENDING PRICE']/ancestor::label");
 
     private final By priceSlider = By.cssSelector(".zds-slider-track");
     private final By priceSliderThumbs = By.xpath("//input[contains(@id,'zds-slider-thumb')]");
@@ -114,8 +116,12 @@ public class ManAllCatalogPage extends BasePage {
         click(closeFilterButton);
     }
 
-    public int getPriceOfCard(WebElement element) {
+    public int getPriceOfCardByWebElement(WebElement element) {
         return getPriceFromFullString(getTextInside(element, priceTagOfCard));
+    }
+    public int getPriceOfCardByIndex( int index) {
+        var cards = findAll(productsList);
+        return getPriceFromFullString(getTextInside(cards.get(index), priceTagOfCard));
     }
 
     public int getPriceFromFullString(String string) {
@@ -214,6 +220,17 @@ public class ManAllCatalogPage extends BasePage {
         return false;
     }
 
+    public ManAllCatalogPage sortByPriceAscending() {
+        openFilterOptions();
+        click(sortPriceAscending);
+        return this;
+    }
+
+    public ManAllCatalogPage sortByPriceDescending() {
+        openFilterOptions();
+        click(sortPriceDescending);
+        return this;
+    }
 
 
 }

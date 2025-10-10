@@ -95,19 +95,4 @@ public class HomeRegressionTest extends BaseTest {
                 "Search item list should not be visible after invalid search.");
     }
 
-   /* @Test(groups = "regression")
-    public void testAfterOpeningShoppingCartZaraLogoShouldBringHomePage() {
-        var cart = homePage.open().acceptCookiesIfPresent().goToShoppingCartPage();
-        var home = cart.goHomePage();
-        Assert.assertTrue(home.atHomePage(), "Should return to home page.");
-    }
-
-    @Test(groups = "regression")
-    public void testAfterOpeningShoppingCartGoingBackHomePageConsistency() {
-        for (int i = 0; i < 5; i++) {
-            var home = homePage.open().acceptCookiesIfPresent()
-                    .goToShoppingCartPage().goHomePage();
-            Assert.assertTrue(home.atHomePage(), "Should open home page.");
-        }
-    }*/
 }
