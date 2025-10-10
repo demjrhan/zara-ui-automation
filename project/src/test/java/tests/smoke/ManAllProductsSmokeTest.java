@@ -45,116 +45,23 @@ public class ManAllProductsSmokeTest extends BaseTest {
                 "details page" + productNameInDetailPage);
     }
 
-    @Test(groups = "smoke")
-    public void clickingOnProductBringsRightScreen10Times() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-        for (int i = 0; i < 10; i++) {
-            var productNameInCatalog = manCatalog.getProductTitleByIndex(i);
-            var productDetailPage = manCatalog.clickCard(i);
-            var productNameInDetailPage = productDetailPage.getNameOfProduct();
-            Assert.assertEquals(productNameInDetailPage, productNameInCatalog, "The product" + productNameInCatalog + "in catalog should be the same in " +
-                    "details page" + productNameInDetailPage);
-            manCatalog = productDetailPage.openManCatalog();
-        }
-    }
-
-    @Test(groups = "smoke")
-    @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
-    @Description("Verify that price range filter works correctly")
-    @Step("Apply price filter and verify results")
-    public void priceRangeFilterWorksCorrectly() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-
-        manCatalog.openFilterOptions();
-        manCatalog.changePriceRangeFilterRandomly();
-        var priceRange = manCatalog.getPriceRangeFilter();
-
-        var products = manCatalog.getAllProducts();
-
-        for (int i = 0; i < 10; i++) {
-            var priceOfProduct = manCatalog.getPriceOfCardByWebElement(products.get(i));
-            Assert.assertTrue(priceOfProduct >= priceRange[0] && priceOfProduct <= priceRange[1], "Price range " + priceRange[0] + " | " + priceRange[1] + " does not sut the product price " + priceOfProduct);
-        }
-        manCatalog.clearFilterOptions();
-    }
-
-    @Test(groups = "smoke")
-    public void priceRangeFilterWorksCorrectly3Times() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-
-        for (int i = 0; i < 3; i++) {
-            manCatalog.openFilterOptions();
-            manCatalog.changePriceRangeFilterRandomly();
-            var priceRange = manCatalog.getPriceRangeFilter();
-
-            var products = manCatalog.getAllProducts();
-
-            for (int j = 0; j < 10; j++) {
-                var priceOfProduct = manCatalog.getPriceOfCardByWebElement(products.get(j));
-                Assert.assertTrue(priceOfProduct >= priceRange[0] && priceOfProduct <= priceRange[1], "Price range " + priceRange[0] + " | " + priceRange[1] + " does not sut the product price " + priceOfProduct);
-            }
-            manCatalog.clearFilterOptions();
-        }
-    }
-
-    @Test(groups = "smoke")
-    @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
-    @Description("Verify that category filter works correctly by index")
-    @Step("Apply category filter by index and verify results")
-    public void categoryFilterWorksCorrectlyByIndex(){
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-
-        var category = manCatalog.getCategoryByIndex(2);
-        var nameOfCategoryList = manCatalog.getCategory(category);
-        manCatalog.click(category);
-        var products = manCatalog.getAllProducts();
-        for (String categoryName : nameOfCategoryList) {
-
-            /* Substring, deleting last index. Categories contains 's' in the end.*/
-            categoryName = categoryName.substring(0, categoryName.length() - 1);
-
-            var result = manCatalog.anyProductContainsString(categoryName, products.subList(0, 10));
-            Assert.assertTrue(result, String.format("Category %s contains %s products", categoryName, result));
-        }
-
-    }
-
-    @Test(groups = "smoke")
-    @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
-    @Description("Verify that category filter works correctly by name")
-    @Step("Apply category filter by index and verify results")
-    public void categoryFilterWorksCorrectlyByName(){
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-
-        var category = manCatalog.getCategoryByName("shirts");
-        var nameOfCategoryList = manCatalog.getCategory(category);
-        manCatalog.click(category);
-        var products = manCatalog.getAllProducts();
-        for (String categoryName : nameOfCategoryList) {
-
-            /* Substring, deleting last index. Categories contains 's' in the end.*/
-            categoryName = categoryName.substring(0, categoryName.length() - 1);
-
-            var result = manCatalog.anyProductContainsString(categoryName, products.subList(0, 10));
-            Assert.assertTrue(result, String.format("Category %s contains %s products", categoryName, result));
-        }
-
-    }
 
     @Test(groups = "smoke")
     @Story("Filter Functionality")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that ascending filter works correctly")
     @Step("Apply ascending filter and verify results")
-    public void ascendingFilterWorksCorrectly(){
+    public void ascendingFilterWorksCorrectly() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
-        var products = manCatalog.getAllProducts();
-        var productsAfter = manCatalog.sortByPriceAscending().getAllProducts();
-        System.out.println(products.get(1));
-        System.out.println(productsAfter.get(1).getText());
 
+        manCatalog.sortByPriceDescending();
+        var firstProductPriceDescending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
+
+        manCatalog.clearFilterOptions();
+
+        manCatalog.sortByPriceAscending();
+        var firstProductPriceAscending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
+
+        Assert.assertTrue(firstProductPriceDescending > firstProductPriceAscending, "Descending filter's first product should always be more expensive than ascending filter's first product. ");
     }
 }

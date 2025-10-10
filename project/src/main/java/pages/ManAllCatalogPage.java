@@ -88,6 +88,9 @@ public class ManAllCatalogPage extends BasePage {
     public List<WebElement> getAllProducts() {
         return findAll(productsList);
     }
+    public WebElement getFirstProduct() {
+        return find(productsList);
+    }
 
     public String getProductTitleByIndex(int index) {
         var cards = findAll(productsList);
@@ -124,7 +127,7 @@ public class ManAllCatalogPage extends BasePage {
         return getPriceFromFullString(getTextInside(cards.get(index), priceTagOfCard));
     }
 
-    public int getPriceFromFullString(String string) {
+    private int getPriceFromFullString(String string) {
         string = string.replace("\u00A0", "");
         string = string.replace("PLN", "").trim();
         string = string.substring(0, string.length() - 3);
@@ -191,7 +194,7 @@ public class ManAllCatalogPage extends BasePage {
         return getCategoryTitleFromFullString(getTextInside(element, nameOfCategory));
     }
 
-    public List<String> getCategoryTitleFromFullString(String string) {
+    private List<String> getCategoryTitleFromFullString(String string) {
         if (string.contains("|")) {
             String[] parts = string.split("\\|");
             return Arrays.stream(parts).toList();
