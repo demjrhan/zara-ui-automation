@@ -63,6 +63,9 @@ public class BasePage {
         el.sendKeys(Keys.ENTER);
     }
 
+    protected int getCountOfElements(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).size();
+    }
     /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
 
     protected boolean isVisible(By locator) {

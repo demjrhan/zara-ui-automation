@@ -24,7 +24,7 @@ public class HomePage extends BasePage {
 
     private final By searchBox = By.xpath("//a[@data-qa-id='header-search-text-link']");
     private final By searchInputField = By.id("search-home-form-combo-input");
-    private final By searchProductsList = By.cssSelector("ul.product-grid__product-list li");
+    private final By productsList = By.cssSelector("ul.product-grid__product-list li");
 
 
     public HomePage(WebDriver driver) {
@@ -90,12 +90,12 @@ public class HomePage extends BasePage {
     }
 
     public List<WebElement> getAllProductsAfterSearch() {
-        waitUntilVisible(searchProductsList);
-        return findAllVisibility(searchProductsList);
+        waitUntilVisible(productsList);
+        return findAllVisibility(productsList);
     }
     public int getProductCountAfterSearch() {
-        waitUntilVisible(searchProductsList);
-        return findAllVisibility(searchProductsList).size();
+        waitUntilVisible(productsList);
+        return findAllVisibility(productsList).size();
     }
 
     public boolean shoppingCartIsVisible() {
