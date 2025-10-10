@@ -3,7 +3,6 @@ package pages;
 import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class ProductDetailPage extends BasePage {
 
@@ -20,29 +19,19 @@ public class ProductDetailPage extends BasePage {
     }
 
     public ManAllCatalogPage openManCatalog() {
-        find(navigationButton).click();
-        find(manNavigationButton).click();
-        find(manViewAllButton).click();
+        findVisibility(navigationButton).click();
+        findVisibility(manNavigationButton).click();
+        findVisibility(manViewAllButton).click();
         waitUntilVisible(manProductsList);
         return new ManAllCatalogPage(driver);
     }
 
-    public WebElement find(By locator) {
-        return super.find(locator);
-    }
     public void clickLogo() {
         click(zaraLogo);
-    }
-    public void click(By locator) {
-        super.click(locator);
     }
 
     public String getNameOfProduct() {
         return getText(By.cssSelector(".product-detail-info__header-name"));
-    }
-
-    public String getText(By locator) {
-        return super.getText(locator);
     }
 
     public HomePage returnHomePage() {

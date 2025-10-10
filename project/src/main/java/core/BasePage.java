@@ -22,13 +22,19 @@ public class BasePage {
         this.actions = new Actions(driver);
     }
 
-    protected WebElement find(By locator) {
+    protected WebElement findVisibility(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+    protected WebElement findPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
     //        driver.findElements(locator);
-    protected List<WebElement> findAll(By locator) {
+    protected List<WebElement> findAllVisibility(By locator) {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    }
+    protected List<WebElement> findAllPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
     protected String getText(By locator) {
@@ -47,12 +53,15 @@ public class BasePage {
     }
 
     protected void type(By locator, String text) {
-        WebElement el = find(locator);
+        WebElement el = findVisibility(locator);
         el.clear();
         el.sendKeys(text);
         wait.until(ExpectedConditions.attributeToBeNotEmpty(el, "value"));
     }
-
+    protected void sendEnter(By locator) {
+        WebElement el = findVisibility(locator);
+        el.sendKeys(Keys.ENTER);
+    }
 
     /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
 
@@ -87,7 +96,7 @@ public class BasePage {
     }
 
     protected boolean isEmpty(By locator) {
-        WebElement el = find(locator);
+        WebElement el = findVisibility(locator);
         String value = el.getTagName().equalsIgnoreCase("input") || el.getTagName().equalsIgnoreCase("textarea")
                 ? el.getAttribute("value")
                 : el.getText();
@@ -102,6 +111,8 @@ public class BasePage {
             return false;
         }
     }
+
+
     protected void refresh() {
         driver.navigate().refresh();
     }
@@ -120,6 +131,10 @@ public class BasePage {
     }
     protected void waitForTitleContains(String text) {
         wait.until(ExpectedConditions.titleContains(text));
+    }
+
+    protected void waitForStaleElementLocated(WebElement element) {
+        wait.until(ExpectedConditions.stalenessOf(element));
     }
 
     protected WebElement findInside(WebElement parent, By childLocator) {

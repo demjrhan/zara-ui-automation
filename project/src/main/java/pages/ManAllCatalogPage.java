@@ -49,51 +49,19 @@ public class ManAllCatalogPage extends BasePage {
         return this;
     }
 
-    public boolean isVisible(By locator) {
-        return super.isVisible(locator);
-    }
-
     public boolean atManAllProductsPage() {
         return isVisible(manAllProductsRoot);
     }
 
-    public List<WebElement> findAll(By locator) {
-        waitUntilVisible(locator);
-        return super.findAll(locator);
-    }
-
-    public WebElement find(By locator) {
-        return super.find(locator);
-    }
-
-    public String getText(By locator) {
-        return super.getText(locator);
-    }
-
-    public void click(By locator) {
-        super.click(locator);
-    }
-    public void click(WebElement element) {
-        super.click(element);
-    }
-
-    public WebElement findInside(WebElement parent, By childLocator) {
-        return super.findInside(parent, childLocator);
-    }
-
-    public String getTextInside(WebElement parent, By childLocator) {
-        return super.getTextInside(parent, childLocator);
-    }
-
     public List<WebElement> getAllProducts() {
-        return findAll(productsList);
+        return findAllVisibility(productsList);
     }
     public WebElement getFirstProduct() {
-        return find(productsList);
+        return findVisibility(productsList);
     }
 
     public String getProductTitleByIndex(int index) {
-        var cards = findAll(productsList);
+        var cards = findAllVisibility(productsList);
         return getTextInside(cards.get(index), By.cssSelector("h3"));
     }
     public String getProductTitleByWebElement(WebElement element) {
@@ -101,7 +69,7 @@ public class ManAllCatalogPage extends BasePage {
     }
 
     public ProductDetailPage clickCard(int index) {
-        var cards = findAll(productsList);
+        var cards = findAllVisibility(productsList);
         var product = cards.get(index);
         product.click();
         return new ProductDetailPage(driver);
@@ -123,7 +91,7 @@ public class ManAllCatalogPage extends BasePage {
         return getPriceFromFullString(getTextInside(element, priceTagOfCard));
     }
     public int getPriceOfCardByIndex( int index) {
-        var cards = findAll(productsList);
+        var cards = findAllVisibility(productsList);
         return getPriceFromFullString(getTextInside(cards.get(index), priceTagOfCard));
     }
 
@@ -138,7 +106,7 @@ public class ManAllCatalogPage extends BasePage {
 
     public int[] getPriceRangeFilter() {
         waitUntilVisible(priceSlider);
-        var priceThumbs = findAll(priceSliderThumbs);
+        var priceThumbs = findAllVisibility(priceSliderThumbs);
 
         var lowLimit = priceThumbs.getFirst().getAttribute("aria-valuetext").trim();
         var highLimit = priceThumbs.getLast().getAttribute("aria-valuetext").trim();
@@ -152,7 +120,7 @@ public class ManAllCatalogPage extends BasePage {
 
     public void changePriceRangeFilterRandomly() {
         waitUntilVisible(priceSliderThumbs);
-        WebElement track = find(priceSlider);
+        WebElement track = findVisibility(priceSlider);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", track);
         int width = track.getSize().getWidth();
         int nearRightFromCenter = (width / 2) - 2;
@@ -168,18 +136,37 @@ public class ManAllCatalogPage extends BasePage {
 
     public List<WebElement> getAllCategories() {
         waitUntilVisible(topBarCategories);
-        return findAll(topBarCategories);
+        return findAllVisibility(topBarCategories);
     }
     public WebElement getCategoryByIndex(int index) {
         waitUntilVisible(topBarCategories);
-        return findAll(topBarCategories).get(index);
+        return findAllVisibility(topBarCategories).get(index);
+    }
+
+    public void clickCategoryByIndex(int index) {
+        waitUntilVisible(topBarCategories);
+        var category = getCategoryByIndex(index);
+        click(category);
+        waitUntilVisible(productsList);
+    }
+    public void clickCategoryByWebElement(WebElement element) {
+        waitUntilVisible(topBarCategories);
+        click(element);
+        waitUntilVisible(productsList);
+    }
+
+    public void clickCategoryByName(String name) {
+        waitUntilVisible(topBarCategories);
+        var category = getCategoryByName(name);
+        click(category);
+        waitUntilVisible(productsList);
     }
     public WebElement getCategoryByName(String name) {
         name = name.toLowerCase().trim();
         waitUntilVisible(topBarCategories);
-        var categories =  findAll(topBarCategories);
+        var categories =  findAllVisibility(topBarCategories);
         for (WebElement category : categories) {
-            var categoryNames = getCategory(category);
+            var categoryNames = getCategoryTitle(category);
             for (var categoryName : categoryNames) {
                 categoryName = categoryName.toLowerCase().trim();
                 if (categoryName.contains(name) || categoryName.startsWith(name) || categoryName.endsWith(name)) {
@@ -190,8 +177,18 @@ public class ManAllCatalogPage extends BasePage {
         return null;
     }
 
-    public List<String> getCategory(WebElement element) {
+    private List<String> getCategoryTitle(WebElement element) {
         return getCategoryTitleFromFullString(getTextInside(element, nameOfCategory));
+    }
+
+    public List<String> getCategoryTitleByWebElement(WebElement element) {
+        waitUntilVisible(topBarCategories);
+        return getCategoryTitle(element);
+    }
+    public List<String> getCategoryTitleByIndex(int index) {
+        waitUntilVisible(topBarCategories);
+        var category = getCategoryByIndex(index);
+        return getCategoryTitle(category);
     }
 
     private List<String> getCategoryTitleFromFullString(String string) {

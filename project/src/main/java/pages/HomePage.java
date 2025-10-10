@@ -12,15 +12,20 @@ public class HomePage extends BasePage {
 
     private final By homeRoot = By.id("I2024-HOME");
     private final By zaraLogo = By.xpath("//a[@data-qa-action='logo-click']");
+    private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
     private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
-
 
     private final By shoppingCart = By.xpath("//a[@data-qa-id='layout-header-go-to-cart']");
     private final By shoppingCartId = By.xpath("//*[@id='shopCartView']");
-    private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
+
     private final By manNavigationButton = By.xpath("//a[contains(@data-categoryid,'1885841')]");
     private final By manViewAllButton = By.xpath("//li[contains(@data-categoryid,'2431932')]");
     private final By manProductsList = By.cssSelector("ul.product-grid__product-list li");
+
+    private final By searchBox = By.xpath("//a[@data-qa-id='header-search-text-link']");
+    private final By searchInputField = By.id("search-home-form-combo-input");
+    private final By searchProductsList = By.cssSelector("ul.product-grid__product-list li");
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -33,9 +38,9 @@ public class HomePage extends BasePage {
     }
 
     public ManAllCatalogPage openManCatalog() {
-        find(navigationButton).click();
-        find(manNavigationButton).click();
-        find(manViewAllButton).click();
+        findVisibility(navigationButton).click();
+        findVisibility(manNavigationButton).click();
+        findVisibility(manViewAllButton).click();
         waitUntilVisible(manProductsList);
         return new ManAllCatalogPage(driver);
     }
@@ -45,61 +50,67 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public void refresh() {
+        super.refresh();
+    }
+
+    public void clickSearch(){
+        waitUntilVisible(searchBox);
+        click(searchBox);
+    }
+
+    public void clickSearchInputField(){
+        waitUntilVisible(searchInputField);
+        click(searchInputField);
+    }
+
+    public boolean searchBoxIsVisible() {
+        return isVisible(searchBox);
+    }
+    public boolean searchInputFieldIsVisible() {
+        return isVisible(searchInputField);
+    }
+
+    public HomePage searchProduct(String product) {
+        clickSearch();
+        clickSearchInputField();
+        searchTextOnSearchInputField(product);
+        return this;
+    }
+
+    public boolean searchInputFieldIsEmpty() {
+        return isEmpty(searchInputField);
+    }
+    public void searchTextOnSearchInputField(String text) {
+        type(searchInputField, text);
+        sendEnter(searchInputField);
+    }
     public boolean atHomePage() {
         return isVisible(homeRoot);
     }
 
-    public void click(By locator) {
-        super.click(locator);
+    public List<WebElement> getAllProductsAfterSearch() {
+        waitUntilVisible(searchProductsList);
+        return findAllVisibility(searchProductsList);
+    }
+    public int getProductCountAfterSearch() {
+        waitUntilVisible(searchProductsList);
+        return findAllVisibility(searchProductsList).size();
     }
 
-
-    public List<WebElement> findAll(By locator) {
-        return super.findAll(locator);
+    public boolean shoppingCartIsVisible() {
+        return isVisible(shoppingCart);
     }
-    public WebElement find(By locator) {
-        return super.find(locator);
-    }
-    public String getText(By locator) {
-        return super.getText(locator);
-    }
-    public void type(By locator, String text) {
-        super.type(locator, text);
+    public boolean shoppingCartIsClickable() {
+        return isClickable(shoppingCart);
     }
 
     public HomePage acceptCookiesIfPresent() {
         if (isVisible(acceptCookiesButton)) click(acceptCookiesButton);
         return this;
     }
-    public void refresh() {
-         super.refresh();
-    }
 
-    public boolean isVisible(By locator) {
-        return super.isVisible(locator);
-    }
-
-    public boolean isNotVisible(By locator) {
-        return super.isNotVisible(locator);
-    }
-
-    public boolean isPresent(By locator) {
-        return super.isPresent(locator);
-    }
-
-    public boolean isEmpty(By locator) {
-        return super.isEmpty(locator);
-    }
-
-    public boolean isClickable(By locator) {
-        return super.isClickable(locator);
-    }
-
-    public void waitForTitleContains(String title) {
-        super.waitForTitleContains(title);
-    }
-
-    protected void waitUntilVisible(By locator) {
-        super.waitUntilVisible(locator);
+    public boolean acceptCookiesButtonIsVisible() {
+        return isVisible(acceptCookiesButton);
     }
 }

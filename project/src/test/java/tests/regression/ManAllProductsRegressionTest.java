@@ -77,9 +77,9 @@ public class ManAllProductsRegressionTest extends BaseTest {
     public void categoryFilterWorksCorrectlyByIndex() {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
-        var category = manCatalog.getCategoryByIndex(2);
-        var nameOfCategoryList = manCatalog.getCategory(category);
-        manCatalog.click(category);
+        var nameOfCategoryList = manCatalog.getCategoryTitleByIndex(2);
+        manCatalog.clickCategoryByIndex(2);
+
         var products = manCatalog.getAllProducts();
         for (String categoryName : nameOfCategoryList) {
 
@@ -101,8 +101,8 @@ public class ManAllProductsRegressionTest extends BaseTest {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
         var category = manCatalog.getCategoryByName("shirts");
-        var nameOfCategoryList = manCatalog.getCategory(category);
-        manCatalog.click(category);
+        var nameOfCategoryList = manCatalog.getCategoryTitleByWebElement(category);
+        manCatalog.clickCategoryByWebElement(category);
         var products = manCatalog.getAllProducts();
         for (String categoryName : nameOfCategoryList) {
 

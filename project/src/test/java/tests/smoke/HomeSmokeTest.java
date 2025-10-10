@@ -10,10 +10,6 @@ import tests.BaseTest;
 @Feature("Home Page Functionality")
 public class HomeSmokeTest extends BaseTest {
 
-    private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
-    private final By searchTrigger = By.xpath("//a[@data-qa-id='header-search-text-link']");
-    private final By shoppingCart = By.xpath("//a[@data-qa-id='layout-header-go-to-cart']");
-    private final By zaraLogo = By.xpath("//a[@data-qa-action='logo-click']");
 
     @Test(groups = "smoke")
     @Story("Home Page Navigation")
@@ -34,7 +30,7 @@ public class HomeSmokeTest extends BaseTest {
     @Step("Check search trigger visibility")
     public void testSearchTriggerIsVisibleOnLoadHomePage() {
         var home = homePage.open().acceptCookiesIfPresent();
-        Assert.assertTrue(home.isVisible(searchTrigger), "Search trigger field should be visible.");
+        Assert.assertTrue(home.searchBoxIsVisible(), "Search trigger field should be visible.");
     }
 
     @Test(groups = "smoke")
@@ -44,7 +40,7 @@ public class HomeSmokeTest extends BaseTest {
     @Step("Check shopping cart visibility")
     public void testShoppingCartShouldBeVisibleOnLoadHomePage() {
         var home = homePage.open().acceptCookiesIfPresent();
-        Assert.assertTrue(home.isVisible(shoppingCart), "Shopping cart should be visible.");
+        Assert.assertTrue(home.shoppingCartIsVisible(), "Shopping cart should be visible.");
     }
 
     @Test(groups = "smoke")
@@ -54,7 +50,7 @@ public class HomeSmokeTest extends BaseTest {
     @Step("Check shopping cart click ability")
     public void testShoppingCartShouldBeClickableOnLoadHomePage() {
         var home = homePage.open().acceptCookiesIfPresent();
-        Assert.assertTrue(home.isClickable(shoppingCart), "Shopping cart should be clickable.");
+        Assert.assertTrue(home.shoppingCartIsClickable(), "Shopping cart should be clickable.");
     }
 
 
