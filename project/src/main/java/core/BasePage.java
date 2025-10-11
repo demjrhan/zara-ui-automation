@@ -18,7 +18,7 @@ public class BasePage {
         /* New way to wait is way better than using Thread.sleep function; In this approach it waits
         until the action is possible, if it will trigger in 2. second that it will return it at that time
         rather than consuming whole 10 seconds.*/
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         this.actions = new Actions(driver);
     }
 
@@ -52,6 +52,27 @@ public class BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
+    protected void scrollToElementSmooth(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'end'});", element);
+    }
+
+    protected void scrollToBottom() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    protected void scrollToBottomGradually() {
+        ((JavascriptExecutor) driver).executeScript(
+            "window.scrollTo({top: document.body.scrollHeight * 0.8, behavior: 'smooth'});"
+        );
+    }
+
+    protected void scrollDown500Pixels() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 500)");
+    }
+    protected void scrollUp500Pixels() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500)");
+    }
+
     protected void type(By locator, String text) {
         WebElement el = findVisibility(locator);
         el.clear();
@@ -66,8 +87,8 @@ public class BasePage {
     protected int getCountOfElements(By locator) {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).size();
     }
-    /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
 
+    /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
     protected boolean isVisible(By locator) {
         try {
             return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
@@ -145,7 +166,6 @@ public class BasePage {
     }
 
     protected String getTextInside(WebElement parent, By childLocator) {
-        waitUntilVisible(childLocator);
         return findInside(parent, childLocator).getText().trim();
     }
 

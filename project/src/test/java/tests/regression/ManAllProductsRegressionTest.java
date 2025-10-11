@@ -18,7 +18,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
         for (int i = 0; i < 10; i++) {
             var productNameInCatalog = manCatalog.getProductTitleByIndex(i);
             var productDetailPage = manCatalog.clickCard(i);
-            var productNameInDetailPage = productDetailPage.getNameOfProduct();
+            var productNameInDetailPage = productDetailPage.getTitleOfProduct();
             Assert.assertEquals(productNameInDetailPage, productNameInCatalog, "The product" + productNameInCatalog + "in catalog should be the same in " +
                     "details page" + productNameInDetailPage);
             manCatalog = productDetailPage.openManCatalog();

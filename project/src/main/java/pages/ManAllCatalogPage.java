@@ -29,6 +29,10 @@ public class ManAllCatalogPage extends BasePage {
     private final By nameOfCategory = By.cssSelector("a");
 
     private final By topBarCategories = By.xpath("//nav[contains(@class,'category-topbar-related-categories')]//ul/li");
+    private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
+
+    private final By productTitleInDetailsPage = By.cssSelector(".product-detail-info__header-name");
+
 
     public ManAllCatalogPage(WebDriver driver) {
         super(driver);
@@ -37,15 +41,6 @@ public class ManAllCatalogPage extends BasePage {
     public ManAllCatalogPage open() {
         driver.get("https://www.zara.com/pl/en/man-all-products-l7465.html?v1=2443335");
         isVisible(manAllProductsRoot);
-        return this;
-    }
-
-    public boolean atBasketPage() {
-        return isVisible(manAllProductsRoot);
-    }
-
-    public ManAllCatalogPage acceptCookiesIfPresent() {
-        if (isVisible(acceptCookiesButton)) click(acceptCookiesButton);
         return this;
     }
 
@@ -71,7 +66,17 @@ public class ManAllCatalogPage extends BasePage {
     public ProductDetailPage clickCard(int index) {
         var cards = findAllVisibility(productsList);
         var product = cards.get(index);
-        product.click();
+        click(product);
+        waitUntilVisible(navigationButton);
+        return new ProductDetailPage(driver);
+    }
+
+    public ProductDetailPage clickRandomCard(){
+        Random rand = new Random();
+        var cards = findAllVisibility(productsList);
+        var product = cards.get(rand.nextInt(cards.size()));
+        click(product);
+        waitUntilVisible(productTitleInDetailsPage);
         return new ProductDetailPage(driver);
     }
 

@@ -40,7 +40,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
         var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
         var productNameInCatalog = manCatalog.getProductTitleByIndex(1);
         var productDetailPage = manCatalog.clickCard(1);
-        var productNameInDetailPage = productDetailPage.getNameOfProduct();
+        var productNameInDetailPage = productDetailPage.getTitleOfProduct();
         Assert.assertEquals(productNameInDetailPage, productNameInCatalog, "The product" + productNameInCatalog + "in catalog should be the same in " +
                 "details page" + productNameInDetailPage);
     }
@@ -60,8 +60,10 @@ public class ManAllProductsSmokeTest extends BaseTest {
         manCatalog.clearFilterOptions();
 
         manCatalog.sortByPriceAscending();
+
         var firstProductPriceAscending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
 
         Assert.assertTrue(firstProductPriceDescending > firstProductPriceAscending, "Descending filter's first product should always be more expensive than ascending filter's first product. ");
     }
+
 }

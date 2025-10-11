@@ -90,12 +90,10 @@ public class HomePage extends BasePage {
     }
 
     public List<WebElement> getAllProductsAfterSearch() {
-        waitUntilVisible(productsList);
-        return findAllVisibility(productsList);
+        return findAllPresence(productsList);
     }
     public int getProductCountAfterSearch() {
-        waitUntilVisible(productsList);
-        return findAllVisibility(productsList).size();
+        return findAllPresence(productsList).size();
     }
 
     public boolean shoppingCartIsVisible() {
