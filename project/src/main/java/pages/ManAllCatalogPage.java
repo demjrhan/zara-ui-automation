@@ -13,7 +13,9 @@ import java.util.Random;
 
 public class ManAllCatalogPage extends BasePage {
 
+    private final By homeRoot = By.id("I2024-HOME");
     private final By manAllProductsRoot = By.id("I2024-HOMBRE-VIEW-ALL-PRODUCTS-VER-TODO");
+    private final By zaraLogo = By.xpath("//a[contains(@class,'layout-header-logo__link')]");
 
     private final By productsList = By.cssSelector("ul.product-grid__product-list li");
     private final By filterButton = By.xpath("//button[contains(@data-qa-action,'filters-button')]");
@@ -36,16 +38,25 @@ public class ManAllCatalogPage extends BasePage {
     private final By footer = By.cssSelector("footer.layout-footer");
     private final By socialFooter = By.cssSelector("ul#homeSocialFooter li");
 
-
-
     public ManAllCatalogPage(WebDriver driver) {
         super(driver);
     }
 
     public ManAllCatalogPage open() {
         driver.get("https://www.zara.com/pl/en/man-all-products-l7465.html?v1=2443335");
-        isVisible(manAllProductsRoot);
+        waitUntilVisible(manAllProductsRoot);
         return this;
+    }
+
+    public HomePage returnHomePage() {
+        click(navigationButton);
+        clickLogo();
+        waitUntilVisible(homeRoot);
+        return new HomePage(driver);
+    }
+
+    public void clickLogo() {
+        click(zaraLogo);
     }
 
     public boolean atManAllProductsPage() {

@@ -10,7 +10,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Product Navigation")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that clicking on a product opens the correct product detail page, 10 times.")
     @Step("Click on first product and verify details page")
     public void clickingOnProductBringsRightScreen10Times() {
@@ -27,7 +27,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that price range filter works correctly")
     @Step("Apply price filter and verify results")
     public void priceRangeFilterWorksCorrectly() {
@@ -48,7 +48,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that price range filter works correctly, 3 Times.")
     @Step("Apply price filter and verify results")
     public void priceRangeFilterWorksCorrectly3Times() {
@@ -71,7 +71,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that category filter works correctly by index")
     @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByIndex() {
@@ -94,7 +94,7 @@ public class ManAllProductsRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Filter Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that category filter works correctly by name")
     @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByName() {
@@ -114,4 +114,24 @@ public class ManAllProductsRegressionTest extends BaseTest {
         }
 
     }
+    @Test(groups = "regression")
+    @Story("Filter Functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that ascending filter works correctly")
+    @Step("Apply ascending filter and verify results")
+    public void ascendingFilterWorksCorrectly() {
+        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+
+        manCatalog.sortByPriceDescending();
+        var firstProductPriceDescending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
+
+        manCatalog.clearFilterOptions();
+
+        manCatalog.sortByPriceAscending();
+
+        var firstProductPriceAscending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
+
+        Assert.assertTrue(firstProductPriceDescending > firstProductPriceAscending, "Descending filter's first product should always be more expensive than ascending filter's first product. ");
+    }
+
 }

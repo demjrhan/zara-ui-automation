@@ -46,25 +46,7 @@ public class ManAllProductsSmokeTest extends BaseTest {
     }
 
 
-    @Test(groups = "smoke")
-    @Story("Filter Functionality")
-    @Severity(SeverityLevel.NORMAL)
-    @Description("Verify that ascending filter works correctly")
-    @Step("Apply ascending filter and verify results")
-    public void ascendingFilterWorksCorrectly() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
 
-        manCatalog.sortByPriceDescending();
-        var firstProductPriceDescending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
-
-        manCatalog.clearFilterOptions();
-
-        manCatalog.sortByPriceAscending();
-
-        var firstProductPriceAscending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
-
-        Assert.assertTrue(firstProductPriceDescending > firstProductPriceAscending, "Descending filter's first product should always be more expensive than ascending filter's first product. ");
-    }
     @Test(groups = "smoke")
     @Story("Social Footer Validation")
     @Severity(SeverityLevel.NORMAL)

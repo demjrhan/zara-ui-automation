@@ -42,8 +42,6 @@ public class ProductDetailPage extends BasePage {
         click(zaraLogo);
     }
 
-
-
     public HomePage returnHomePage() {
         click(navigationButton);
         clickLogo();

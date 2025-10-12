@@ -29,6 +29,10 @@ public class HomePage extends BasePage {
     private final By footer = By.cssSelector("footer.layout-footer");
     private final By socialFooter = By.cssSelector("ul#homeSocialFooter li");
 
+    private final By signUpTitle = By.xpath("//title[contains(text(), 'Registration')]");
+    private final By loginButton = By.xpath("//a[@data-qa-id='layout-header-user-logon']");
+    private final By registerButton = By.xpath("//div[@class='register-button-container']");
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -36,8 +40,16 @@ public class HomePage extends BasePage {
 
     public HomePage open() {
         driver.get("https://www.zara.com/pl/en/");
-        isVisible(homeRoot);
+        waitUntilVisible(homeRoot);
         return this;
+    }
+
+    public SignUpPage openSignUp() {
+        findVisibility(loginButton).click();
+        waitUntilVisible(registerButton);
+        findVisibility(registerButton).click();
+        waitUntilVisible(signUpTitle);
+        return new SignUpPage(driver);
     }
 
     public ManAllCatalogPage openManCatalog() {

@@ -38,7 +38,7 @@ public class HomeRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Search Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify search functionality works correctly")
     @Step("Click search and type text")
     public void testClickSearchAndWrite() {
@@ -61,7 +61,7 @@ public class HomeRegressionTest extends BaseTest {
 
     @Test(groups = "regression")
     @Story("Search Functionality")
-    @Severity(SeverityLevel.TRIVIAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Verify that search results populate after typing valid search term")
     @Step("Search for 'Blazer' and verify results appear")
     public void testAfterSearchItemListPopulates() {
@@ -81,5 +81,32 @@ public class HomeRegressionTest extends BaseTest {
         home = home.searchProduct("random-text");
         Assert.assertEquals(home.getProductCountAfterSearch(), 0, "Search item list should be empty after invalid search.");
     }
+    @Test(groups = "regression")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer names always match.")
+    @Step("Check social footer names are matching with man catalog.")
+    public void verifySocialFooterLinksMatchWithManCatalog() {
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.scrollDownToSocialFooterSmooth();
+        var homeFooterNames = home.getSocialFooterLinkNames();
+        var manCatalog = home.openManCatalog();
+        var manCatalogNames = manCatalog.getSocialFooterLinkNames();
 
+        Assert.assertEquals(homeFooterNames,manCatalogNames, "Social footer link names should be the same.");
+    }
+    @Test(groups = "regression")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer names always match.")
+    @Step("Check social footer names are matching with man catalog.")
+    public void verifySocialFooterLinksMatchWithProductDetails() {
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.scrollDownToSocialFooterSmooth();
+        var homeFooterNames = home.getSocialFooterLinkNames();
+        var details = home.openManCatalog().clickRandomCard();
+        var detailsNames = details.getSocialFooterLinkNames();
+
+        Assert.assertEquals(homeFooterNames,detailsNames, "Social footer link names should be the same.");
+    }
 }
