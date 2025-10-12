@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,6 @@ import java.util.Random;
 public class ManAllCatalogPage extends BasePage {
 
     private final By manAllProductsRoot = By.id("I2024-HOMBRE-VIEW-ALL-PRODUCTS-VER-TODO");
-    private final By acceptCookiesButton = By.id("onetrust-accept-btn-handler");
 
     private final By productsList = By.cssSelector("ul.product-grid__product-list li");
     private final By filterButton = By.xpath("//button[contains(@data-qa-action,'filters-button')]");
@@ -32,6 +32,10 @@ public class ManAllCatalogPage extends BasePage {
     private final By navigationButton = By.xpath("//button[contains(@data-qa-id,'layout-header-toggle-menu')]");
 
     private final By productTitleInDetailsPage = By.cssSelector(".product-detail-info__header-name");
+
+    private final By footer = By.cssSelector("footer.layout-footer");
+    private final By socialFooter = By.cssSelector("ul#homeSocialFooter li");
+
 
 
     public ManAllCatalogPage(WebDriver driver) {
@@ -225,17 +229,35 @@ public class ManAllCatalogPage extends BasePage {
         return false;
     }
 
-    public ManAllCatalogPage sortByPriceAscending() {
+    public void sortByPriceAscending() {
         openFilterOptions();
         click(sortPriceAscending);
-        return this;
     }
 
-    public ManAllCatalogPage sortByPriceDescending() {
+    public void sortByPriceDescending() {
         openFilterOptions();
         click(sortPriceDescending);
-        return this;
     }
 
+    public void scrollDownToFooterSmooth() {
+        scrollToElementSmooth(findPresence(footer));
+    }
 
+    public void scrollDownToSocialFooterSmooth() {
+        scrollToElementSmooth(findPresence(socialFooter));
+    }
+
+    public int getSocialFooterLinkCount() {
+        return findAllPresence(socialFooter).size();
+    }
+
+    public List<String> getSocialFooterLinkNames() {
+        var links = findAllPresence(socialFooter);
+        var names = new ArrayList<String>();
+        links.forEach(link ->{
+            var name = getTextInside(link, By.cssSelector("a"));
+            if (!name.isEmpty()) names.add(name);
+        });
+        return names;
+    }
 }

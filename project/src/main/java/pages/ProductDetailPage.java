@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDetailPage extends BasePage {
@@ -20,6 +21,8 @@ public class ProductDetailPage extends BasePage {
     private final By youMayLikeSection = By.cssSelector("div.product-cross-selling-grid");
 
     private final By footer = By.cssSelector("footer.layout-footer");
+    private final By socialFooter = By.cssSelector("ul#homeSocialFooter li");
+
 
     private final By productTitle = By.cssSelector(".product-detail-info__header-name");
 
@@ -86,12 +89,30 @@ public class ProductDetailPage extends BasePage {
         return getCountOfElements(productsList);
     }
 
-    public void scrollDownToFooter() {
-        scrollToElement(findPresence(footer));
+    public void scrollDownToFooterSmooth() {
+        scrollToElementSmooth(findPresence(footer));
+    }
+
+    public void scrollDownToSocialFooterSmooth() {
+        scrollToElementSmooth(findPresence(socialFooter));
     }
 
     public void scrollToInterestedProduct() {
         scrollToBottomGradually();
         waitUntilVisible(youMayLikeSection);
+    }
+
+    public int getSocialFooterLinkCount() {
+        return findAllPresence(socialFooter).size();
+    }
+
+    public List<String> getSocialFooterLinkNames() {
+        var links = findAllPresence(socialFooter);
+        var names = new ArrayList<String>();
+        links.forEach(link ->{
+            var name = getTextInside(link, By.cssSelector("a"));
+            if (!name.isEmpty()) names.add(name);
+        });
+        return names;
     }
 }

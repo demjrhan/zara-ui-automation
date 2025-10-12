@@ -47,4 +47,15 @@ public class ProductDetailSmokeTest extends BaseTest {
         Assert.assertEquals(firstRecommendedProductTitleAfter, firstRecommendedProductsTitle,
                 String.format("The first recommended product title should be the same after opening the product. Expected: %s, Actual: %s",
                         firstRecommendedProductsTitle, firstRecommendedProductTitleAfter));    }
+
+    @Test(groups = "smoke")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer always has at least one link.")
+    @Step("Check social footer count")
+    public void checkSocialFooterCountOnLoadHomePage() {
+        var details = homePage.open().acceptCookiesIfPresent().openManCatalog().clickRandomCard();
+        details.scrollDownToSocialFooterSmooth();
+        Assert.assertTrue(details.getSocialFooterLinkCount() > 0, "Social footer link count should be greater than zero.");
+    }
 }

@@ -65,5 +65,16 @@ public class ManAllProductsSmokeTest extends BaseTest {
 
         Assert.assertTrue(firstProductPriceDescending > firstProductPriceAscending, "Descending filter's first product should always be more expensive than ascending filter's first product. ");
     }
+    @Test(groups = "smoke")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer always has at least one link.")
+    @Step("Check social footer count")
+    public void checkSocialFooterCountOnLoadHomePage() {
+        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        manCatalog.scrollDownToSocialFooterSmooth();
+        Assert.assertTrue(manCatalog.getSocialFooterLinkCount() > 0, "Social footer link count should be greater than zero.");
+    }
+
 
 }

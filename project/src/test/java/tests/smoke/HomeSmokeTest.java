@@ -1,7 +1,6 @@
 package tests.smoke;
 
 import io.qameta.allure.*;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.BaseTest;
@@ -53,6 +52,43 @@ public class HomeSmokeTest extends BaseTest {
         Assert.assertTrue(home.shoppingCartIsClickable(), "Shopping cart should be clickable.");
     }
 
+    @Test(groups = "smoke")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer always has at least one link.")
+    @Step("Check social footer count")
+    public void checkSocialFooterCountOnLoadHomePage() {
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.scrollDownToSocialFooterSmooth();
+        Assert.assertTrue(home.getSocialFooterLinkCount() > 0, "Social footer link count should be greater than zero.");
+    }
 
+    @Test(groups = "smoke")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer names always match.")
+    @Step("Check social footer names are matching with man catalog.")
+    public void verifySocialFooterLinksMatchWithManCatalog() {
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.scrollDownToSocialFooterSmooth();
+        var homeFooterNames = home.getSocialFooterLinkNames();
+        var manCatalog = home.openManCatalog();
+        var manCatalogNames = manCatalog.getSocialFooterLinkNames();
 
+        Assert.assertEquals(homeFooterNames,manCatalogNames, "Social footer link names should be the same.");
+    }
+    @Test(groups = "smoke")
+    @Story("Social Footer Validation")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that social footer names always match.")
+    @Step("Check social footer names are matching with man catalog.")
+    public void verifySocialFooterLinksMatchWithProductDetails() {
+        var home = homePage.open().acceptCookiesIfPresent();
+        home.scrollDownToSocialFooterSmooth();
+        var homeFooterNames = home.getSocialFooterLinkNames();
+        var details = home.openManCatalog().clickRandomCard();
+        var detailsNames = details.getSocialFooterLinkNames();
+
+        Assert.assertEquals(homeFooterNames,detailsNames, "Social footer link names should be the same.");
+    }
 }
