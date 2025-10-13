@@ -23,9 +23,29 @@ public class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
+    protected void clearTextField(By locator) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).clear();
+    }
+
     protected void click(WebElement element) {
         scrollToElement(element);
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
+    protected void checkFrontendValidations(By locator) {
+        WebElement element = findVisibility(locator);
+        Boolean validNow = (Boolean) ((JavascriptExecutor) driver).executeScript("return arguments[0].checkValidity();", element);
+        String pattern = element.getAttribute("pattern");
+        String required = element.getAttribute("required");
+        String minLen = element.getAttribute("minlength");
+        String maxLen = element.getAttribute("maxlength");
+
+        System.out.printf("ValidNow: %s\n", validNow);
+        System.out.printf("Pattern: %s\n", pattern);
+        System.out.printf("Required: %s\n", required);
+        System.out.printf("MinLen: %s\n", minLen);
+        System.out.printf("MaxLen: %s\n", maxLen);
+
     }
 
     protected List<WebElement> findAllPresence(By locator) {
@@ -52,10 +72,12 @@ public class BasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).size();
     }
 
+    /* This method is only going to return the visible text inside of that locator, for instance a span text existing in the DOM will not be returned.*/
     protected String getText(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
     }
 
+    /* If you specifically want to get some text in child element, use this method rather than getText. */
     protected String getTextInside(WebElement parent, By childLocator) {
         return findInside(parent, childLocator).getText().trim();
     }
@@ -137,6 +159,11 @@ public class BasePage {
     protected void sendEnter(By locator) {
         WebElement el = findVisibility(locator);
         el.sendKeys(Keys.ENTER);
+    }
+
+    protected void sendTab(By locator) {
+        WebElement el = findVisibility(locator);
+        el.sendKeys(Keys.TAB);
     }
 
     protected void type(By locator, String text) {

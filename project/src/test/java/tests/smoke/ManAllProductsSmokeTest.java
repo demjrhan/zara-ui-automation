@@ -16,7 +16,9 @@ public class ManAllProductsSmokeTest extends BaseTest {
     @Description("Verify that man products catalog page opens correctly")
     @Step("Navigate to man catalog page")
     public void pageOpensCorrectly() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
         Assert.assertTrue(manCatalog.atManAllProductsPage(), "Man all products page should be opened");
     }
 
@@ -26,7 +28,9 @@ public class ManAllProductsSmokeTest extends BaseTest {
     @Description("Verify that at least one product is displayed in catalog")
     @Step("Check if products are loaded")
     public void thereIsAtLeastOneProduct() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
         var products = manCatalog.getAllProducts();
         Assert.assertFalse(products.isEmpty(), "There should be at least one product");
     }
@@ -37,7 +41,9 @@ public class ManAllProductsSmokeTest extends BaseTest {
     @Description("Verify that clicking on a product opens the correct product detail page")
     @Step("Click on first product and verify details page")
     public void clickingOnProductBringsRightScreen() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
         var productNameInCatalog = manCatalog.getProductTitleByIndex(1);
         var productDetailPage = manCatalog.clickCard(1);
         var productNameInDetailPage = productDetailPage.getTitleOfProduct();
@@ -53,7 +59,9 @@ public class ManAllProductsSmokeTest extends BaseTest {
     @Description("Verify that social footer always has at least one link.")
     @Step("Check social footer count")
     public void checkSocialFooterCountOnLoadHomePage() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
         manCatalog.scrollDownToSocialFooterSmooth();
         Assert.assertTrue(manCatalog.getSocialFooterLinkCount() > 0, "Social footer link count should be greater than zero.");
     }

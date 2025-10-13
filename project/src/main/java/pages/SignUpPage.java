@@ -2,7 +2,9 @@ package pages;
 
 import core.BasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class SignUpPage extends BasePage {
 
@@ -13,11 +15,24 @@ public class SignUpPage extends BasePage {
     private final By signUpTitle = By.xpath("//title[contains(text(), 'Registration')]");
 
     private final By emailField = By.xpath("//input[contains(@data-qa-input-qualifier,'email')]");
+    private final By emailFieldErrorContainer = By.xpath("//div[contains(@data-name,'email')]//div[contains(@class,'form-input-error')]");
+
     private final By passwordField = By.xpath("//input[contains(@data-qa-input-qualifier,'password')]");
+    private final By passwordFieldErrorContainer = By.xpath("//div[contains(@data-name,'password')]//div[contains(@class,'form-input-error')]");
+
     private final By nameField = By.xpath("//input[contains(@data-qa-input-qualifier,'firstName')]");
+    private final By nameFieldErrorContainer = By.xpath("//div[contains(@data-name,'firstName')]//div[contains(@class,'form-input-error')]");
+
     private final By surnameField = By.xpath("//input[contains(@data-qa-input-qualifier,'lastName')]");
-    private final By phonePrefix = By.xpath("//input[contains(@data-qa-input-qualifier,'phone.prefix')]");
+    private final By surnameFieldErrorContainer = By.xpath("//div[contains(@data-name,'lastName')]//div[contains(@class,'form-input-error')]");
+
     private final By phoneNumberField = By.xpath("//input[contains(@data-qa-input-qualifier,'phone.number')]");
+    private final By phoneNumberFieldErrorContainer = By.xpath("//div[contains(@data-name,'autocompletePhone')]//div[contains(@class,'form-input-error')]");
+
+    private final By phonePrefix = By.xpath("//input[contains(@data-qa-input-qualifier,'phone.prefix')]");
+    private final By phonePrefixFieldErrorContainer = By.xpath("//div[contains(@data-name,'autocompletePhone')]//div[contains(@class,'form-input-error')]");
+
+
     private final By personalisedEmailConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'newsletterCheck')]");
     private final By privacyConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'privacyCheck')]");
 
@@ -43,6 +58,8 @@ public class SignUpPage extends BasePage {
         click(zaraLogo);
     }
 
+
+
     public void clickEmailField() {
         click(emailField);
     }
@@ -50,6 +67,11 @@ public class SignUpPage extends BasePage {
     public void writeToEmailField(String email) {
         click(emailField);
         type(emailField, email);
+        sendTab(emailField);
+    }
+
+    public String getErrorFieldOfEmail() {
+        return getText(emailFieldErrorContainer);
     }
 
     public void clickPasswordField() {
@@ -59,6 +81,11 @@ public class SignUpPage extends BasePage {
     public void writeToPasswordField(String password) {
         click(passwordField);
         type(passwordField, password);
+        sendTab(passwordField);
+    }
+
+    public String getErrorFieldOfPassword() {
+        return getText(passwordFieldErrorContainer);
     }
 
     public void clickNameField() {
@@ -68,6 +95,11 @@ public class SignUpPage extends BasePage {
     public void writeToNameField(String name) {
         click(nameField);
         type(nameField, name);
+        sendTab(nameField);
+    }
+
+    public String getErrorFieldOfName() {
+        return getText(nameFieldErrorContainer);
     }
 
     public void clickSurnameField() {
@@ -77,6 +109,11 @@ public class SignUpPage extends BasePage {
     public void writeToSurnameField(String surname) {
         click(surnameField);
         type(surnameField, surname);
+        sendTab(surnameField);
+    }
+
+    public String getErrorFieldOfSurname() {
+        return getText(surnameFieldErrorContainer);
     }
 
     public void clickPhonePrefixField() {
@@ -86,6 +123,11 @@ public class SignUpPage extends BasePage {
     public void writeToPhonePrefixField(String prefix) {
         click(phonePrefix);
         type(phonePrefix, prefix);
+        sendTab(phonePrefix);
+    }
+
+    public String getErrorFieldOfPhonePrefix() {
+        return getText(phonePrefixFieldErrorContainer);
     }
 
     public void clickPhoneNumberField() {
@@ -95,13 +137,11 @@ public class SignUpPage extends BasePage {
     public void writeToPhoneNumberField(String number) {
         click(phoneNumberField);
         type(phoneNumberField, number);
+        sendTab(phoneNumberField);
     }
 
-    public void clickPersonalisedEmailConsent() {
-        click(personalisedEmailConsent);
+    public String getErrorFieldOfPhoneNumber() {
+        return getText(phoneNumberFieldErrorContainer);
     }
 
-    public void clickPrivacyConsent() {
-        click(privacyConsent);
-    }
 }

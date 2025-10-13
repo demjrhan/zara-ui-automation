@@ -14,7 +14,10 @@ public class ManAllProductsRegressionTest extends BaseTest {
     @Description("Verify that clicking on a product opens the correct product detail page, 10 times.")
     @Step("Click on first product and verify details page")
     public void clickingOnProductBringsRightScreen10Times() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
+
         for (int i = 0; i < 10; i++) {
             var productNameInCatalog = manCatalog.getProductTitleByIndex(i);
             var productDetailPage = manCatalog.clickCard(i);
@@ -31,7 +34,9 @@ public class ManAllProductsRegressionTest extends BaseTest {
     @Description("Verify that price range filter works correctly")
     @Step("Apply price filter and verify results")
     public void priceRangeFilterWorksCorrectly() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
 
         manCatalog.openFilterOptions();
         manCatalog.changePriceRangeFilterRandomly();
@@ -52,7 +57,9 @@ public class ManAllProductsRegressionTest extends BaseTest {
     @Description("Verify that price range filter works correctly, 3 Times.")
     @Step("Apply price filter and verify results")
     public void priceRangeFilterWorksCorrectly3Times() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
 
         for (int i = 0; i < 3; i++) {
             manCatalog.openFilterOptions();
@@ -75,7 +82,9 @@ public class ManAllProductsRegressionTest extends BaseTest {
     @Description("Verify that category filter works correctly by index")
     @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByIndex() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
 
         var nameOfCategoryList = manCatalog.getCategoryTitleByIndex(2);
         manCatalog.clickCategoryByIndex(2);
@@ -98,7 +107,9 @@ public class ManAllProductsRegressionTest extends BaseTest {
     @Description("Verify that category filter works correctly by name")
     @Step("Apply category filter by index and verify results")
     public void categoryFilterWorksCorrectlyByName() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
 
         var category = manCatalog.getCategoryByName("shirts");
         var nameOfCategoryList = manCatalog.getCategoryTitleByWebElement(category);
@@ -114,13 +125,16 @@ public class ManAllProductsRegressionTest extends BaseTest {
         }
 
     }
+
     @Test(groups = "regression")
     @Story("Filter Functionality")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that ascending filter works correctly")
     @Step("Apply ascending filter and verify results")
     public void ascendingFilterWorksCorrectly() {
-        var manCatalog = homePage.open().acceptCookiesIfPresent().openManCatalog();
+        var manCatalog = homePage.open()
+                .acceptCookiesIfPresent()
+                .openManCatalog();
 
         manCatalog.sortByPriceDescending();
         var firstProductPriceDescending = manCatalog.getPriceOfCardByWebElement(manCatalog.getFirstProduct());
