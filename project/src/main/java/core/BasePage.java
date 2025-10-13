@@ -15,104 +15,54 @@ public class BasePage {
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
-        /* New way to wait is way better than using Thread.sleep function; In this approach it waits
-        until the action is possible, if it will trigger in 2. second that it will return it at that time
-        rather than consuming whole 10 seconds.*/
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         this.actions = new Actions(driver);
     }
 
-    protected WebElement findVisibility(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    }
-    protected WebElement findPresence(By locator) {
-        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-    }
-
-    //        driver.findElements(locator);
-    protected List<WebElement> findAllVisibility(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
-    }
-    protected List<WebElement> findAllPresence(By locator) {
-        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
-    }
-
-    protected String getText(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
-    }
     protected void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
+
     protected void click(WebElement element) {
         scrollToElement(element);
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 
-    protected void scrollToElement(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    protected List<WebElement> findAllPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
-    protected void scrollToElementSmooth(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'end'});", element);
+    protected List<WebElement> findAllVisibility(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
-    protected void scrollToBottom() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    protected WebElement findInside(WebElement parent, By childLocator) {
+        return wait.until(_ -> parent.findElement(childLocator));
     }
 
-    protected void scrollToBottomGradually() {
-        ((JavascriptExecutor) driver).executeScript(
-            "window.scrollTo({top: document.body.scrollHeight * 0.8, behavior: 'smooth'});"
-        );
+    protected WebElement findPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
-    protected void scrollDown500Pixels() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 500)");
-    }
-    protected void scrollUp500Pixels() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500)");
-    }
-
-    protected void type(By locator, String text) {
-        WebElement el = findVisibility(locator);
-        el.clear();
-        el.sendKeys(text);
-        wait.until(ExpectedConditions.attributeToBeNotEmpty(el, "value"));
-    }
-    protected void sendEnter(By locator) {
-        WebElement el = findVisibility(locator);
-        el.sendKeys(Keys.ENTER);
+    protected WebElement findVisibility(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     protected int getCountOfElements(By locator) {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).size();
     }
 
-    /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
-    protected boolean isVisible(By locator) {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
-        } catch (TimeoutException e) {
-            return false;
-        }
+    protected String getText(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
     }
 
-    /* Checks: Element is in the DOM and invisible (display == none and opacity == 0 and has size <= 0).  */
-
-    protected boolean isNotVisible(By locator) {
-        try {
-            return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-        } catch (TimeoutException e) {
-            return false;
-        }
+    protected String getTextInside(WebElement parent, By childLocator) {
+        return findInside(parent, childLocator).getText().trim();
     }
 
-    /*
-        Checks: The element exists in the DOM, regardless of whether it’s visible. */
-
-    protected boolean isPresent(By locator) {
+    protected boolean isClickable(By locator) {
         try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
             return true;
         } catch (TimeoutException e) {
             return false;
@@ -127,47 +77,96 @@ public class BasePage {
         return value == null || value.isEmpty();
     }
 
-    protected boolean isClickable(By locator) {
+    /* Checks: Element is in the DOM and visible (display != none and opacity != 0 and has size > 0).  */
+    protected boolean isVisible(By locator) {
         try {
-            wait.until(ExpectedConditions.elementToBeClickable(locator));
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    /* Checks: Element is in the DOM and invisible (display == none and opacity == 0 and has size <= 0).  */
+    protected boolean isNotVisible(By locator) {
+        try {
+            return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    protected boolean isPresent(By locator) {
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (TimeoutException e) {
             return false;
         }
     }
 
-
     protected void refresh() {
         driver.navigate().refresh();
     }
-    protected void waitUntilVisible(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+
+    protected void scrollDown500Pixels() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 500)");
     }
 
-    protected void waitUntilInvisible(By locator) {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    protected void scrollToBottom() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
-    protected void waitUntilCountIs(By locator, int expected) {
-        wait.until(_ -> driver.findElements(locator).size() == expected);
+
+    protected void scrollToBottomGradually() {
+        ((JavascriptExecutor) driver).executeScript(
+                "window.scrollTo({top: document.body.scrollHeight * 0.8, behavior: 'smooth'});"
+        );
     }
-    protected void waitUntilCountChanges(By locator, int previous) {
-        wait.until(_ -> driver.findElements(locator).size() != previous);
+
+    protected void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
-    protected void waitForTitleContains(String text) {
-        wait.until(ExpectedConditions.titleContains(text));
+
+    protected void scrollToElementSmooth(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'end'});", element);
+    }
+
+    protected void scrollUp500Pixels() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500)");
+    }
+
+    protected void sendEnter(By locator) {
+        WebElement el = findVisibility(locator);
+        el.sendKeys(Keys.ENTER);
+    }
+
+    protected void type(By locator, String text) {
+        WebElement el = findVisibility(locator);
+        el.clear();
+        el.sendKeys(text);
+        wait.until(ExpectedConditions.attributeToBeNotEmpty(el, "value"));
     }
 
     protected void waitForStaleElementLocated(WebElement element) {
         wait.until(ExpectedConditions.stalenessOf(element));
     }
 
-    protected WebElement findInside(WebElement parent, By childLocator) {
-        return wait.until(_ -> parent.findElement(childLocator));
+    protected void waitForTitleContains(String text) {
+        wait.until(ExpectedConditions.titleContains(text));
     }
 
-    protected String getTextInside(WebElement parent, By childLocator) {
-        return findInside(parent, childLocator).getText().trim();
+    protected void waitUntilCountChanges(By locator, int previous) {
+        wait.until(_ -> driver.findElements(locator).size() != previous);
     }
 
+    protected void waitUntilCountIs(By locator, int expected) {
+        wait.until(_ -> driver.findElements(locator).size() == expected);
+    }
 
+    protected void waitUntilInvisible(By locator) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
+
+    protected void waitUntilVisible(By locator) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
 }

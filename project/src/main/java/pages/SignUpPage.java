@@ -12,6 +12,16 @@ public class SignUpPage extends BasePage {
 
     private final By signUpTitle = By.xpath("//title[contains(text(), 'Registration')]");
 
+    private final By emailField = By.xpath("//input[contains(@data-qa-input-qualifier,'email')]");
+    private final By passwordField = By.xpath("//input[contains(@data-qa-input-qualifier,'password')]");
+    private final By nameField = By.xpath("//input[contains(@data-qa-input-qualifier,'firstName')]");
+    private final By surnameField = By.xpath("//input[contains(@data-qa-input-qualifier,'lastName')]");
+    private final By phonePrefix = By.xpath("//input[contains(@data-qa-input-qualifier,'phone.prefix')]");
+    private final By phoneNumberField = By.xpath("//input[contains(@data-qa-input-qualifier,'phone.number')]");
+    private final By personalisedEmailConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'newsletterCheck')]");
+    private final By privacyConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'privacyCheck')]");
+
+
     public SignUpPage(WebDriver driver) {
         super(driver);
     }
@@ -33,4 +43,65 @@ public class SignUpPage extends BasePage {
         click(zaraLogo);
     }
 
+    public void clickEmailField() {
+        click(emailField);
+    }
+
+    public void writeToEmailField(String email) {
+        click(emailField);
+        type(emailField, email);
+    }
+
+    public void clickPasswordField() {
+        click(passwordField);
+    }
+
+    public void writeToPasswordField(String password) {
+        click(passwordField);
+        type(passwordField, password);
+    }
+
+    public void clickNameField() {
+        click(nameField);
+    }
+
+    public void writeToNameField(String name) {
+        click(nameField);
+        type(nameField, name);
+    }
+
+    public void clickSurnameField() {
+        click(surnameField);
+    }
+
+    public void writeToSurnameField(String surname) {
+        click(surnameField);
+        type(surnameField, surname);
+    }
+
+    public void clickPhonePrefixField() {
+        click(phonePrefix);
+    }
+
+    public void writeToPhonePrefixField(String prefix) {
+        click(phonePrefix);
+        type(phonePrefix, prefix);
+    }
+
+    public void clickPhoneNumberField() {
+        click(phoneNumberField);
+    }
+
+    public void writeToPhoneNumberField(String number) {
+        click(phoneNumberField);
+        type(phoneNumberField, number);
+    }
+
+    public void clickPersonalisedEmailConsent() {
+        click(personalisedEmailConsent);
+    }
+
+    public void clickPrivacyConsent() {
+        click(privacyConsent);
+    }
 }

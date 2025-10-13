@@ -1,6 +1,5 @@
 package pages;
 
-
 import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -33,23 +32,62 @@ public class HomePage extends BasePage {
     private final By loginButton = By.xpath("//a[@data-qa-id='layout-header-user-logon']");
     private final By registerButton = By.xpath("//div[@class='register-button-container']");
 
-
     public HomePage(WebDriver driver) {
         super(driver);
+    }
+
+    public boolean acceptCookiesButtonIsVisible() {
+        return isVisible(acceptCookiesButton);
+    }
+
+    public HomePage acceptCookiesIfPresent() {
+        if (isVisible(acceptCookiesButton)) click(acceptCookiesButton);
+        return this;
+    }
+
+    public boolean atHomePage() {
+        return isVisible(homeRoot);
+    }
+
+    public HomePage clickLogo() {
+        click(zaraLogo);
+        return this;
+    }
+
+    public void clickSearch() {
+        click(searchBox);
+    }
+
+    public void clickSearchInputField() {
+        click(searchInputField);
+    }
+
+    public List<WebElement> getAllProductsAfterSearch() {
+        return findAllPresence(productsList);
+    }
+
+    public int getProductCountAfterSearch() {
+        return findAllPresence(productsList).size();
+    }
+
+    public int getSocialFooterLinkCount() {
+        return findAllPresence(socialFooter).size();
+    }
+
+    public List<String> getSocialFooterLinkNames() {
+        var links = findAllPresence(socialFooter);
+        var names = new ArrayList<String>();
+        links.forEach(link ->{
+            var name = getTextInside(link, By.cssSelector("a"));
+            if (!name.isEmpty()) names.add(name);
+        });
+        return names;
     }
 
     public HomePage open() {
         driver.get("https://www.zara.com/pl/en/");
         waitUntilVisible(homeRoot);
         return this;
-    }
-
-    public SignUpPage openSignUp() {
-        findVisibility(loginButton).click();
-        waitUntilVisible(registerButton);
-        findVisibility(registerButton).click();
-        waitUntilVisible(signUpTitle);
-        return new SignUpPage(driver);
     }
 
     public ManAllCatalogPage openManCatalog() {
@@ -60,27 +98,32 @@ public class HomePage extends BasePage {
         return new ManAllCatalogPage(driver);
     }
 
-    public HomePage clickLogo() {
-        click(zaraLogo);
-        return this;
+    public SignUpPage openSignUp() {
+        findVisibility(loginButton).click();
+        waitUntilVisible(registerButton);
+        findVisibility(registerButton).click();
+        waitUntilVisible(signUpTitle);
+        return new SignUpPage(driver);
     }
 
     public void refresh() {
         super.refresh();
     }
 
-    public void clickSearch() {
-        waitUntilVisible(searchBox);
-        click(searchBox);
+    public void scrollDownToFooterSmooth() {
+        scrollToElementSmooth(findPresence(footer));
     }
 
-    public void clickSearchInputField() {
-        waitUntilVisible(searchInputField);
-        click(searchInputField);
+    public void scrollDownToSocialFooterSmooth() {
+        scrollToElementSmooth(findPresence(socialFooter));
     }
 
     public boolean searchBoxIsVisible() {
         return isVisible(searchBox);
+    }
+
+    public boolean searchInputFieldIsEmpty() {
+        return isEmpty(searchInputField);
     }
 
     public boolean searchInputFieldIsVisible() {
@@ -94,64 +137,17 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public boolean searchInputFieldIsEmpty() {
-        return isEmpty(searchInputField);
-    }
-
     public void searchTextOnSearchInputField(String text) {
         type(searchInputField, text);
         sendEnter(searchInputField);
-    }
-
-    public boolean atHomePage() {
-        return isVisible(homeRoot);
-    }
-
-    public List<WebElement> getAllProductsAfterSearch() {
-        return findAllPresence(productsList);
-    }
-
-    public int getProductCountAfterSearch() {
-        return findAllPresence(productsList).size();
-    }
-
-    public boolean shoppingCartIsVisible() {
-        return isVisible(shoppingCart);
     }
 
     public boolean shoppingCartIsClickable() {
         return isClickable(shoppingCart);
     }
 
-    public HomePage acceptCookiesIfPresent() {
-        if (isVisible(acceptCookiesButton)) click(acceptCookiesButton);
-        return this;
-    }
-
-    public boolean acceptCookiesButtonIsVisible() {
-        return isVisible(acceptCookiesButton);
-    }
-
-    public void scrollDownToFooterSmooth() {
-        scrollToElementSmooth(findPresence(footer));
-    }
-
-    public void scrollDownToSocialFooterSmooth() {
-        scrollToElementSmooth(findPresence(socialFooter));
-    }
-
-    public int getSocialFooterLinkCount() {
-        return findAllPresence(socialFooter).size();
-    }
-
-    public List<String> getSocialFooterLinkNames() {
-        var links = findAllPresence(socialFooter);
-        var names = new ArrayList<String>();
-        links.forEach(link ->{
-            var name = getTextInside(link, By.cssSelector("a"));
-            if (!name.isEmpty()) names.add(name);
-                });
-        return names;
+    public boolean shoppingCartIsVisible() {
+        return isVisible(shoppingCart);
     }
 
 }
