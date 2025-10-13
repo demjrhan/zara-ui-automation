@@ -15,7 +15,7 @@ public class BasePage {
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         this.actions = new Actions(driver);
     }
 
@@ -24,8 +24,13 @@ public class BasePage {
     }
 
     protected void clearTextField(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).clear();
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        String value = element.getAttribute("value");
+        if (value != null && !value.isEmpty()) {
+            element.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        }
     }
+
 
     protected void click(WebElement element) {
         scrollToElement(element);
@@ -148,6 +153,10 @@ public class BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
+    protected void scrollToElement(By locator) {
+        WebElement element = driver.findElement(locator);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
     protected void scrollToElementSmooth(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'end'});", element);
     }
@@ -168,7 +177,7 @@ public class BasePage {
 
     protected void type(By locator, String text) {
         WebElement el = findVisibility(locator);
-        el.clear();
+        clearTextField(locator);
         el.sendKeys(text);
         wait.until(ExpectedConditions.attributeToBeNotEmpty(el, "value"));
     }

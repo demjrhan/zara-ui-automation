@@ -102,5 +102,10 @@ public class CredentialsManager {
                !username.isEmpty() &&
                !password.isEmpty();
     }
+
+    public static String getRandomEmail(String tag) {
+        long ts = System.currentTimeMillis();
+        return "qa+" + tag + "." + ts + "@example.com";
+    }
 }
 

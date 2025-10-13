@@ -2,7 +2,6 @@ package pages;
 
 import core.BasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -33,8 +32,8 @@ public class SignUpPage extends BasePage {
     private final By phonePrefixFieldErrorContainer = By.xpath("//div[contains(@data-name,'autocompletePhone')]//div[contains(@class,'form-input-error')]");
 
 
-    private final By personalisedEmailConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'newsletterCheck')]");
-    private final By privacyConsent = By.xpath("//input[contains(@data-qa-input-qualifier,'privacyCheck')]");
+    private final By personalisedEmailConsent = By.xpath("//div[contains(@data-name,'newsletterCheck')]//span");
+    private final By privacyConsent = By.xpath("//div[contains(@data-name,'privacyCheck')]//span");
 
 
     public SignUpPage(WebDriver driver) {
@@ -59,7 +58,6 @@ public class SignUpPage extends BasePage {
     }
 
 
-
     public void clickEmailField() {
         click(emailField);
     }
@@ -72,6 +70,10 @@ public class SignUpPage extends BasePage {
 
     public String getErrorFieldOfEmail() {
         return getText(emailFieldErrorContainer);
+    }
+
+    public boolean isEmailErrorFieldVisible() {
+        return isVisible(emailFieldErrorContainer);
     }
 
     public void clickPasswordField() {
@@ -88,6 +90,10 @@ public class SignUpPage extends BasePage {
         return getText(passwordFieldErrorContainer);
     }
 
+    public boolean isPasswordErrorFieldVisible() {
+        return isVisible(passwordFieldErrorContainer);
+    }
+
     public void clickNameField() {
         click(nameField);
     }
@@ -100,6 +106,10 @@ public class SignUpPage extends BasePage {
 
     public String getErrorFieldOfName() {
         return getText(nameFieldErrorContainer);
+    }
+
+    public boolean isNameErrorFieldVisible() {
+        return isVisible(nameFieldErrorContainer);
     }
 
     public void clickSurnameField() {
@@ -116,6 +126,10 @@ public class SignUpPage extends BasePage {
         return getText(surnameFieldErrorContainer);
     }
 
+    public boolean isSurnameErrorFieldVisible() {
+        return isVisible(surnameFieldErrorContainer);
+    }
+
     public void clickPhonePrefixField() {
         click(phonePrefix);
     }
@@ -129,6 +143,11 @@ public class SignUpPage extends BasePage {
     public String getErrorFieldOfPhonePrefix() {
         return getText(phonePrefixFieldErrorContainer);
     }
+
+    public boolean isPhonePrefixErrorFieldVisible() {
+        return isVisible(phonePrefixFieldErrorContainer);
+    }
+
 
     public void clickPhoneNumberField() {
         click(phoneNumberField);
@@ -144,4 +163,23 @@ public class SignUpPage extends BasePage {
         return getText(phoneNumberFieldErrorContainer);
     }
 
+    public boolean isPhoneNumberErrorFieldVisible() {
+        return isVisible(phoneNumberFieldErrorContainer);
+    }
+
+    public SignUpPage tickPrivacyConsentIfPresent() {
+        if (isPresent(privacyConsent)) {
+            WebElement el = findVisibility(privacyConsent);
+            if (!el.isSelected()) el.click();
+        }
+        return this;
+    }
+
+    public SignUpPage tickPersonalisedEmailConsentIfPresent() {
+        if (isPresent(personalisedEmailConsent)) {
+            WebElement el = findVisibility(personalisedEmailConsent);
+            if (!el.isSelected()) el.click();
+        }
+        return this;
+    }
 }
