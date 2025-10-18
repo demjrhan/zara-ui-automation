@@ -205,4 +205,8 @@ public class BasePage {
     protected void waitUntilVisible(By locator) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+
+    protected void waitUntilPresent(By locator) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
 }

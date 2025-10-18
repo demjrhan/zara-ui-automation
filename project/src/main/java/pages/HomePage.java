@@ -102,6 +102,7 @@ public class HomePage extends BasePage {
         findVisibility(loginButton).click();
         waitUntilVisible(registerButton);
         findVisibility(registerButton).click();
+        waitUntilPresent(signUpTitle);
         return new SignUpPage(driver);
     }
 

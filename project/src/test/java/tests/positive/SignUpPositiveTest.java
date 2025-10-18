@@ -40,9 +40,9 @@ public class SignUpPositiveTest extends BaseTest {
     @DataProvider(name = "validPhones")
     public Object[][] validPhones() {
         return new Object[][]{
-                {"48", "600700800"},
-                {"1", "4155552671"},
-                {"44", "7400123456"}
+                {"+48", "600700800"},
+                {"+1", "5062345678"},
+                {"+44", "7400123456"}
         };
     }
 
@@ -59,9 +59,8 @@ public class SignUpPositiveTest extends BaseTest {
 
         String email = getRandomEmail("ok");
         signup.writeToEmailField(email);
-        String emailError = signup.getErrorFieldOfEmail();
 
-        Assert.assertTrue(emailError.isEmpty(), "Expected no email error for a valid address.");
+        Assert.assertFalse(signup.isEmailErrorFieldVisible(), "Expected no email error for a valid address.");
     }
 
     @Test(groups = "positive", dataProvider = "validPasswords")
@@ -75,9 +74,8 @@ public class SignUpPositiveTest extends BaseTest {
                 .openSignUp();
 
         signup.writeToPasswordField(pwd);
-        String passwordError = signup.getErrorFieldOfPassword();
 
-        Assert.assertTrue(passwordError.isEmpty(), "Expected no password error for a strong password.");
+        Assert.assertFalse(signup.isPasswordErrorFieldVisible(), "Expected no password error for a strong password.");
     }
 
     @Test(groups = "positive", dataProvider = "validNames")
@@ -93,8 +91,8 @@ public class SignUpPositiveTest extends BaseTest {
         signup.writeToNameField(firstName);
         signup.writeToSurnameField(lastName);
 
-        Assert.assertTrue(signup.getErrorFieldOfName().isEmpty(), "Expected no error for first name.");
-        Assert.assertTrue(signup.getErrorFieldOfSurname().isEmpty(), "Expected no error for surname.");
+        Assert.assertFalse(signup.isNameErrorFieldVisible(), "Expected no error for first name.");
+        Assert.assertFalse(signup.isSurnameErrorFieldVisible(), "Expected no error for surname.");
     }
 
     @Test(groups = "positive", dataProvider = "validPhones")
@@ -110,8 +108,8 @@ public class SignUpPositiveTest extends BaseTest {
         signup.writeToPhonePrefixField(prefix);
         signup.writeToPhoneNumberField(number);
 
-        Assert.assertTrue(signup.getErrorFieldOfPhonePrefix().isEmpty(), "Expected no error for phone prefix.");
-        Assert.assertTrue(signup.getErrorFieldOfPhoneNumber().isEmpty(), "Expected no error for phone number.");
+        Assert.assertFalse(signup.isPhonePrefixErrorFieldVisible(), "Expected no error for phone prefix.");
+        Assert.assertFalse(signup.isPhoneNumberErrorFieldVisible(), "Expected no error for phone number.");
     }
 
     @Test(groups = "positive")
