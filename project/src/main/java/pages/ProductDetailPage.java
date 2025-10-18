@@ -92,11 +92,11 @@ public class ProductDetailPage extends BasePage {
         return new ManAllCatalogPage(driver);
     }
 
-    public HomePage returnHomePage() {
+    public void returnHomePage() {
         click(navigationButton);
         clickLogo();
         waitUntilVisible(homeRoot);
-        return new HomePage(driver);
+        new HomePage(driver);
     }
 
     public void scrollDownToFooterSmooth() {

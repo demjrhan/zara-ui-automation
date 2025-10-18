@@ -175,11 +175,10 @@ public class SignUpPage extends BasePage {
         return this;
     }
 
-    public SignUpPage tickPersonalisedEmailConsentIfPresent() {
+    public void tickPersonalisedEmailConsentIfPresent() {
         if (isPresent(personalisedEmailConsent)) {
             WebElement el = findVisibility(personalisedEmailConsent);
             if (!el.isSelected()) el.click();
         }
-        return this;
     }
 }

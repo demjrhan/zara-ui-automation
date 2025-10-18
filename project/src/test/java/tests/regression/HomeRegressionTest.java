@@ -85,7 +85,7 @@ public class HomeRegressionTest extends BaseTest {
         var home = homePage.open()
                 .acceptCookiesIfPresent();
         home = home.searchProduct("random-text");
-        Assert.assertFalse(home.getProductCountAfterSearch() == 0, "Search item list should not be empty after invalid search.");
+        Assert.assertNotEquals(home.getProductCountAfterSearch(), 0, "Search item list should not be empty after invalid search.");
     }
     @Test(groups = "regression")
     @Story("Social Footer Validation")

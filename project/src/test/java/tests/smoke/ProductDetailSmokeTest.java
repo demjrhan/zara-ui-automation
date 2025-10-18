@@ -71,5 +71,4 @@ public class ProductDetailSmokeTest extends BaseTest {
         Assert.assertTrue(details.getSocialFooterLinkCount() > 0, "Social footer link count should be greater than zero.");
     }
 
-    /* TODO Wishlist testing. Login/Signup pages needed.*/
 }
