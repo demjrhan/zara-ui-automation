@@ -40,13 +40,21 @@ src/
  │   └─ pages/
  │       ├─ HomePage.java
  │       ├─ ManAllCatalogPage.java
- │       └─ ProductDetailPage.java
+ │       ├─ ProductDetailPage.java
+ │       └─ SignUpPage.java
  └─ test/java/tests/
      ├─ BaseTest.java
+     ├─ negative/
+         └─ SignUpNegativeTest.java
+     ├─ positive/
+         └─ SignUpPositiveTest.java
      ├─ smoke/
      │   ├─ HomeSmokeTest.java
-     │   └─ ManAllProductsSmokeTest.java
+     │   ├─ ManAllProductsSmokeTest.java
+     │   └─ ProductDetailSmokeTest.java
      └─ regression/
+         ├─ HomeRegressionTest.java
+         ├─ ManAllProductsRegressionTest.java
          └─ HomeRegressionTest.java
 ```
 
@@ -57,6 +65,8 @@ src/
 |---|---|
 | **Smoke** | Home navigation, product listing visibility, cart add/remove basics |
 | **Regression** | Logo routing, page consistency, edge cart behaviors |
+| **Negative** | Required fields validation, invalid email formats, weak/short password rejection, disallowed characters/length boundaries. |
+| **Positive** | Successful account creation with valid data, password meeting policy, optional fields handled correctly. |
 
 ---
 
@@ -70,6 +80,8 @@ mvn clean test
 # By TestNG group
 mvn -Dgroups=smoke test
 mvn -Dgroups=regression test
+mvn -Dgroups=negative test
+mvn -Dgroups=positive test
 ```
 
 ### Allure Report
