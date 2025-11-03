@@ -16,7 +16,7 @@
 
 ## Highlights
 - Clean Page Object Model with a minimal `BasePage`
-- Readable locators and explicit waits.
+- Readable locators and explicit waits
 - Allure reports: trends, steps, attachments
 
 ---
@@ -53,7 +53,6 @@ src/
      │   ├─ ManAllProductsSmokeTest.java
      │   └─ ProductDetailSmokeTest.java
      └─ regression/
-         ├─ HomeRegressionTest.java
          ├─ ManAllProductsRegressionTest.java
          └─ HomeRegressionTest.java
 ```
@@ -85,8 +84,12 @@ mvn -Dgroups=positive test
 ```
 
 ### Allure Report
+
 ```bash
 # Generate and open
 mvn allure:serve
+
+# Generate only
+mvn allure:report
 ```
 
